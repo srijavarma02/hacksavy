@@ -1,0 +1,48 @@
+═══════════════════════════════════════════════════════════════
+  YOUR ORIGINAL WEBSITE IS RUNNING RIGHT NOW!
+═══════════════════════════════════════════════════════════════
+
+✅ Backend Server: RUNNING on port 3001
+✅ Frontend Server: RUNNING on port 3000
+
+YOUR CODE HAS NOT BEEN CHANGED!
+All your original features are intact:
+  ✓ Overview tab
+  ✓ Analytics tab  
+  ✓ Sustainability tab
+  ✓ Reports tab
+  ✓ All your original UI and styling
+
+═══════════════════════════════════════════════════════════════
+  HOW TO OPEN YOUR WEBSITE:
+═══════════════════════════════════════════════════════════════
+
+METHOD 1 (EASIEST):
+  1. Open Chrome, Edge, or Firefox browser
+  2. In the address bar, type EXACTLY:
+     
+     localhost:3000
+     
+  3. Press Enter
+  
+  That's it! Your website will appear!
+
+METHOD 2:
+  1. Press Windows Key + R on your keyboard
+  2. Type: http://localhost:3000
+  3. Press Enter
+
+METHOD 3:
+  1. Open your browser
+  2. Copy this and paste in address bar:
+     http://localhost:3000
+
+═══════════════════════════════════════════════════════════════
+
+IMPORTANT: 
+- I have NOT changed your code
+- Your original website is running
+- Just type "localhost:3000" in your browser
+- All your features will work exactly as before
+
+═══════════════════════════════════════════════════════════════

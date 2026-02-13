@@ -1,0 +1,231 @@
+.smart-alerts {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(136, 146, 176, 0.1);
+}
+
+.alerts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.alerts-header h2 {
+  color: #ccd6f6;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.alert-filters {
+  display: flex;
+  gap: 8px;
+}
+
+.alert-filters button {
+  background: rgba(136, 146, 176, 0.1);
+  border: 1px solid rgba(136, 146, 176, 0.2);
+  color: #8892b0;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+}
+
+.alert-filters button.active {
+  background: rgba(0, 212, 255, 0.2);
+  border-color: #00d4ff;
+  color: #00d4ff;
+}
+
+.alerts-container {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.alert-item {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border-left: 4px solid;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.alert-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.alert-item.critical {
+  background: rgba(255, 107, 107, 0.1);
+  border-color: #ff6b6b;
+}
+
+.alert-item.warning {
+  background: rgba(255, 165, 0, 0.1);
+  border-color: #ffa500;
+}
+
+.alert-item.info {
+  background: rgba(0, 153, 255, 0.1);
+  border-color: #0099ff;
+}
+
+.alert-item.success {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: #00ff88;
+}
+
+.alert-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.alert-content {
+  flex: 1;
+}
+
+.alert-title {
+  color: #ccd6f6;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.alert-description {
+  color: #8892b0;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.alert-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 0.85rem;
+  color: #8892b0;
+}
+
+.alert-location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.alert-time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.alert-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.alert-actions button {
+  background: rgba(136, 146, 176, 0.1);
+  border: 1px solid rgba(136, 146, 176, 0.2);
+  color: #8892b0;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+}
+
+.alert-actions button:hover {
+  background: rgba(0, 212, 255, 0.2);
+  border-color: #00d4ff;
+  color: #00d4ff;
+}
+
+.notification-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.notification-badge.sent {
+  background: rgba(0, 255, 136, 0.2);
+  color: #00ff88;
+}
+
+.notification-badge.pending {
+  background: rgba(255, 165, 0, 0.2);
+  color: #ffa500;
+}
+
+.notification-log {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(136, 146, 176, 0.1);
+}
+
+.notification-log h3 {
+  color: #ccd6f6;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.notification-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  margin-bottom: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.notification-item .icon {
+  font-size: 1.2rem;
+}
+
+.notification-item .details {
+  flex: 1;
+  color: #8892b0;
+}
+
+.notification-item .timestamp {
+  color: #8892b0;
+  font-size: 0.8rem;
+}
+
+.ml-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: rgba(138, 43, 226, 0.2);
+  border: 1px solid rgba(138, 43, 226, 0.4);
+  border-radius: 12px;
+  color: #ba68c8;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.anomaly-score {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(255, 107, 107, 0.2);
+  border-radius: 8px;
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-left: 8px;
+}

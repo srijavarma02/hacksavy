@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #0f172a;
+            color: #ccd6f6;
+        }
+        .status {
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+        .success {
+            background: #10b981;
+            color: white;
+        }
+        .error {
+            background: #ef4444;
+            color: white;
+        }
+        .loading {
+            background: #f59e0b;
+            color: white;
+        }
+        pre {
+            background: #1e293b;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔌 Smart Campus Connection Test</h1>
+    
+    <div id="backend-status" class="status loading">
+        Testing backend connection...
+    </div>
+    
+    <div id="frontend-status" class="status loading">
+        Testing frontend connection...
+    </div>
+    
+    <div>
+        <button onclick="testBackend()">Test Backend</button>
+        <button onclick="openApp()">Open App</button>
+        <button onclick="location.reload()">Refresh</button>
+    </div>
+    
+    <h2>Backend Response:</h2>
+    <pre id="response">Waiting for test...</pre>
+
+    <script>
+        async function testBackend() {
+            const statusDiv = document.getElementById('backend-status');
+            const responseDiv = document.getElementById('response');
+            
+            statusDiv.className = 'status loading';
+            statusDiv.textContent = 'Testing backend...';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/current-data');
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Backend is working! Receiving data from ' + data.buildings.length + ' buildings';
+                    responseDiv.textContent = JSON.stringify(data, null, 2).substring(0, 1000) + '\n\n... (truncated)';
+                } else {
+                    throw new Error('HTTP ' + response.status);
+                }
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Backend connection failed: ' + error.message;
+                responseDiv.textContent = 'Error: ' + error.message;
+            }
+        }
+        
+        async function testFrontend() {
+            const statusDiv = document.getElementById('frontend-status');
+            
+            try {
+                const response = await fetch('http://localhost:3000');
+                if (response.ok) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Frontend is running on http://localhost:3000';
+                } else {
+                    throw new Error('HTTP ' + response.status);
+                }
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Frontend connection failed: ' + error.message;
+            }
+        }
+        
+        function openApp() {
+            window.open('http://localhost:3000', '_blank');
+        }
+        
+        // Auto-test on load
+        window.onload = function() {
+            testBackend();
+            testFrontend();
+        };
+    </script>
+</body>
+</html>

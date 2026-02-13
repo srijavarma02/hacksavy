@@ -1,0 +1,235 @@
+.sustainability-metrics {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(136, 146, 176, 0.1);
+  margin-bottom: 20px;
+}
+
+.sustainability-metrics h2 {
+  color: #ccd6f6;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+}
+
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.metric-box {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 15px;
+  border: 1px solid rgba(136, 146, 176, 0.1);
+  transition: all 0.3s ease;
+}
+
+.metric-box:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 212, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.2);
+}
+
+.metric-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.metric-icon {
+  font-size: 1.8rem;
+}
+
+.metric-label {
+  color: #8892b0;
+  font-size: 0.9rem;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ccd6f6;
+  margin-bottom: 8px;
+}
+
+.metric-value.good {
+  color: #00ff88;
+}
+
+.metric-value.warning {
+  color: #ffa500;
+}
+
+.metric-value.critical {
+  color: #ff6b6b;
+}
+
+.metric-unit {
+  font-size: 1rem;
+  color: #8892b0;
+  margin-left: 5px;
+}
+
+.metric-change {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.metric-change.positive {
+  color: #00ff88;
+}
+
+.metric-change.negative {
+  color: #ff6b6b;
+}
+
+.progress-section {
+  margin-top: 30px;
+}
+
+.progress-section h3 {
+  color: #ccd6f6;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.progress-bar-container {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.progress-label {
+  color: #ccd6f6;
+  font-weight: 600;
+}
+
+.progress-value {
+  color: #00d4ff;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.progress-bar {
+  height: 12px;
+  background: rgba(136, 146, 176, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.5s ease;
+  background: linear-gradient(90deg, #00d4ff, #00ff88);
+}
+
+.progress-fill.warning {
+  background: linear-gradient(90deg, #ffa500, #ff6b6b);
+}
+
+.progress-target {
+  position: absolute;
+  top: -5px;
+  height: 22px;
+  width: 2px;
+  background: #fff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+.progress-target::after {
+  content: 'Target';
+  position: absolute;
+  top: -20px;
+  left: -15px;
+  font-size: 0.7rem;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.emissions-breakdown {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.emission-item {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.emission-item .value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ccd6f6;
+  margin-bottom: 5px;
+}
+
+.emission-item .label {
+  font-size: 0.85rem;
+  color: #8892b0;
+}
+
+.renewable-gauge {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 20px auto;
+}
+
+.gauge-svg {
+  transform: rotate(-90deg);
+}
+
+.gauge-bg {
+  fill: none;
+  stroke: rgba(136, 146, 176, 0.1);
+  stroke-width: 20;
+}
+
+.gauge-fill {
+  fill: none;
+  stroke: url(#renewableGradient);
+  stroke-width: 20;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.gauge-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.gauge-text .percentage {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #00ff88;
+}
+
+.gauge-text .label {
+  font-size: 0.9rem;
+  color: #8892b0;
+}

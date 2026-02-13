@@ -1,0 +1,362 @@
+.threshold-controls {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.threshold-controls.loading {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.controls-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.controls-header h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.current-period {
+  display: flex;
+  align-items: center;
+}
+
+.period-badge {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.period-badge.morning {
+  background: linear-gradient(135deg, #FDB813 0%, #FF9A00 100%);
+  color: white;
+}
+
+.period-badge.night {
+  background: linear-gradient(135deg, #4A5568 0%, #2D3748 100%);
+  color: white;
+}
+
+.threshold-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.threshold-section {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.threshold-section.morning {
+  border-left: 4px solid #FDB813;
+}
+
+.threshold-section.night {
+  border-left: 4px solid #4A5568;
+}
+
+.threshold-section h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.threshold-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.threshold-input-group label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label-text {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+.threshold-input {
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.threshold-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.threshold-input.warning {
+  border-left: 4px solid #FDB813;
+}
+
+.threshold-input.critical {
+  border-left: 4px solid #EF4444;
+}
+
+.adaptive-section {
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.adaptive-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.adaptive-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.adaptive-toggle input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.adaptive-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.adaptive-controls {
+  padding-top: 16px;
+  border-top: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.multiplier-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #667eea, #764ba2);
+  outline: none;
+  -webkit-appearance: none;
+  margin: 10px 0;
+}
+
+.multiplier-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #667eea;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.multiplier-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #667eea;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #666;
+}
+
+.active-thresholds {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.active-thresholds h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.active-values {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.active-value {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  background: white;
+}
+
+.active-value.warning {
+  border-left: 4px solid #FDB813;
+}
+
+.active-value.critical {
+  border-left: 4px solid #EF4444;
+}
+
+.active-value .icon {
+  font-size: 32px;
+}
+
+.active-value .value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+.active-value .label {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.adaptive-indicator {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  border-radius: 6px;
+  font-size: 13px;
+  color: #667eea;
+  text-align: center;
+  font-weight: 500;
+}
+
+.historical-data {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.historical-data h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.historical-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.historical-item {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.period-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.stat-label {
+  color: #666;
+}
+
+.stat-value {
+  font-weight: 600;
+  color: #333;
+}
+
+.info-box {
+  display: flex;
+  gap: 12px;
+  background: #E3F2FD;
+  border-left: 4px solid #2196F3;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.info-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.info-content {
+  font-size: 13px;
+  color: #333;
+}
+
+.info-content strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #2196F3;
+}
+
+.info-content ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.info-content li {
+  margin-bottom: 4px;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .threshold-sections,
+  .active-values,
+  .historical-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,69 @@
+.trend-charts {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.chart-container {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(136, 146, 176, 0.1);
+}
+
+.chart-title {
+  color: #ccd6f6;
+  font-size: 1.1rem;
+  margin: 0 0 20px 0;
+  font-weight: 600;
+}
+
+.chart-tooltip {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  padding: 12px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.tooltip-label {
+  color: #ccd6f6;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.chart-tooltip p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+}
+
+.no-charts {
+  color: #8892b0;
+  text-align: center;
+  padding: 40px;
+  font-size: 1rem;
+}
+
+.unsupported-chart {
+  color: #8892b0;
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .chart-container {
+    padding: 15px;
+  }
+
+  .chart-title {
+    font-size: 1rem;
+  }
+
+  .trend-charts {
+    gap: 20px;
+  }
+}

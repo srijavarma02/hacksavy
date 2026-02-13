@@ -1,0 +1,71 @@
+.campus-map-container {
+  background: rgba(26, 31, 58, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(45, 53, 97, 0.5);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #e0e6ed;
+}
+
+.campus-map {
+  background: rgba(13, 17, 35, 0.8);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.map-svg {
+  width: 100%;
+  height: auto;
+}
+
+.building {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.building:hover rect {
+  fill: rgba(45, 53, 97, 0.8);
+  stroke-width: 3;
+}
+
+.building.selected rect {
+  fill: rgba(0, 212, 255, 0.2);
+  stroke-width: 3;
+}
+
+.status-indicator {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.map-legend {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #8892b0;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+}

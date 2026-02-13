@@ -1,0 +1,8 @@
+Building ID,Building Name,Status,Total Energy (kWh),Avg Power (kW),Peak Power (kW),Avg Occupancy (%),Avg Temperature (°C),Total Wastage (kWh),Wastage (%)
+1,Engineering Block,good,3686.67,153.61,215.06,64.60,22.30,806.67,28.00
+2,Science Lab,good,4438.74,184.95,258.93,70.60,21.20,838.74,23.30
+3,Library,good,2570.98,107.12,149.97,81.70,22.10,650.98,33.90
+4,Dorm A,good,3151.30,131.30,183.83,53.30,22.80,751.30,31.30
+5,Dorm B,good,3173.27,132.22,185.11,61.80,21.20,773.27,32.20
+6,Admin Building,needs_attention,2709.81,112.91,158.07,74.20,24.50,549.81,25.50
+7,Sports Complex,good,3486.97,145.29,203.41,51.90,22.20,846.97,32.10

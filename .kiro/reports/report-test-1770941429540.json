@@ -1,0 +1,43 @@
+{
+  "id": "test-1770941429540",
+  "generatedAt": "2026-02-13T00:10:29.541Z",
+  "period": {
+    "start": "2026-02-12T00:10:29.551Z",
+    "end": "2026-02-13T00:10:29.551Z"
+  },
+  "summary": {
+    "totalEnergy": 15234.56,
+    "totalWastage": 1523.45,
+    "totalAlerts": 12,
+    "criticalIssues": 3,
+    "sustainabilityScore": 78.5,
+    "keyHighlights": [
+      "Test report generated successfully"
+    ]
+  },
+  "buildingDetails": [],
+  "alertSummary": {
+    "total": 12,
+    "critical": 3,
+    "warning": 7,
+    "info": 2,
+    "avgResponseTime": 15.5,
+    "topAlerts": []
+  },
+  "anomalyInsights": {
+    "totalDetected": 0,
+    "byBuilding": {},
+    "criticalAnomalies": [],
+    "patterns": []
+  },
+  "sustainability": {
+    "totalCO2": 500,
+    "energyIntensity": 10,
+    "renewablePercent": 25,
+    "costSavings": 1000,
+    "netZeroProgress": 45
+  },
+  "trends": [],
+  "recommendations": [],
+  "charts": []
+}

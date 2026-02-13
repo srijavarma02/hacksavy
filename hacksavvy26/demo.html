@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Campus Energy Management Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+      color: #e0e6ed;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .header {
+      background: rgba(13, 17, 35, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(45, 53, 97, 0.5);
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1920px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      font-size: 32px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #8892b0;
+      margin-top: 2px;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(26, 31, 58, 0.6);
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #00ff88;
+      border-radius: 50%;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 300px 1fr 350px;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1920px;
+      margin: 0 auto;
+    }
+
+    .left-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .center-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .right-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .full-width-section {
+      background: rgba(26, 31, 58, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(45, 53, 97, 0.5);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .time-energy-chart {
+      height: 350px;
+    }
+
+    .threshold-indicator {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .threshold-item {
+      text-align: center;
+      padding: 12px;
+      border-radius: 6px;
+    }
+
+    .threshold-item.day {
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid #ffd700;
+    }
+
+    .threshold-item.night {
+      background: rgba(0, 153, 255, 0.1);
+      border: 1px solid #0099ff;
+    }
+
+    .threshold-label {
+      font-size: 11px;
+      color: #8892b0;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .threshold-value {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .building-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .building-tab {
+      padding: 8px 12px;
+      background: rgba(13, 17, 35, 0.8);
+      border: 1px solid rgba(45, 53, 97, 0.5);
+      border-radius: 6px;
+      color: #8892b0;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .building-tab:hover {
+      background: rgba(45, 53, 97, 0.5);
+      color: #e0e6ed;
+    }
+
+    .building-tab.active {
+      background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+      color: #fff;
+      border-color: #00d4ff;
+    }
+
+    .timetable-container {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .timetable-slot {
+      background: rgba(13, 17, 35, 0.8);
+      padding: 10px;
+      border-radius: 6px;
+      border-left: 3px solid;
+      margin-bottom: 8px;
+    }
+
+    .timetable-slot.active {
+      border-color: #00ff88;
+      background: rgba(0, 255, 136, 0.05);
+    }
+
+    .timetable-slot.upcoming {
+      border-color: #ffd700;
+    }
+
+    .timetable-slot.inactive {
+      border-color: #8892b0;
+      opacity: 0.6;
+    }
+
+    .slot-time {
+      font-size: 12px;
+      color: #00d4ff;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .slot-activity {
+      font-size: 14px;
+      color: #e0e6ed;
+      margin-bottom: 4px;
+    }
+
+    .slot-occupancy {
+      font-size: 11px;
+      color: #8892b0;
+    }
+
+    .predictions-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .prediction-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background: rgba(13, 17, 35, 0.8);
+      border-radius: 6px;
+    }
+
+    .prediction-label {
+      font-size: 13px;
+      color: #8892b0;
+    }
+
+    .prediction-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: #00d4ff;
+    }
+
+    .countermeasures-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .countermeasure-item {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      background: rgba(13, 17, 35, 0.8);
+      border-radius: 6px;
+      border-left: 3px solid;
+    }
+
+    .countermeasure-item.high-priority {
+      border-color: #ff6b6b;
+    }
+
+    .countermeasure-item.medium-priority {
+      border-color: #ffd700;
+    }
+
+    .countermeasure-item.low-priority {
+      border-color: #00ff88;
+    }
+
+    .countermeasure-icon {
+      font-size: 20px;
+    }
+
+    .countermeasure-content {
+      flex: 1;
+    }
+
+    .countermeasure-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e0e6ed;
+      margin-bottom: 4px;
+    }
+
+    .countermeasure-desc {
+      font-size: 12px;
+      color: #8892b0;
+    }
+
+    .current-time-display {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      background: rgba(26, 31, 58, 0.6);
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .time-period {
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .time-period.day {
+      background: rgba(255, 215, 0, 0.2);
+      color: #ffd700;
+    }
+
+    .time-period.night {
+      background: rgba(0, 153, 255, 0.2);
+      color: #0099ff;
+    }
+
+    .metrics-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .metric-card {
+      background: rgba(26, 31, 58, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid;
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .metric-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .metric-icon {
+      font-size: 20px;
+    }
+
+    .metric-title {
+      font-size: 13px;
+      color: #8892b0;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-value {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .metric-value .value {
+      font-size: 32px;
+      font-weight: 700;
+      color: #e0e6ed;
+    }
+
+    .metric-value .unit {
+      font-size: 16px;
+      color: #8892b0;
+      font-weight: 500;
+    }
+
+    .change {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .change.positive {
+      color: #00ff88;
+      background: rgba(0, 255, 136, 0.1);
+    }
+
+    .change.negative {
+      color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.1);
+    }
+
+    .sparkline {
+      width: 100%;
+      height: 40px;
+      opacity: 0.8;
+    }
+
+
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #e0e6ed;
+    }
+
+    .campus-map {
+      background: rgba(13, 17, 35, 0.8);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+
+    .map-svg {
+      width: 100%;
+      height: auto;
+    }
+
+    .building {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .building:hover rect {
+      fill: rgba(45, 53, 97, 0.8);
+      stroke-width: 3;
+    }
+
+    .building.selected rect {
+      fill: rgba(0, 212, 255, 0.2);
+      stroke-width: 3;
+    }
+
+    .status-indicator-dot {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .map-legend {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #8892b0;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    .alerts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .alert-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      border-left: 3px solid;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .alert-item.critical {
+      background: rgba(255, 107, 107, 0.1);
+      border-color: #ff6b6b;
+    }
+
+    .alert-item.warning {
+      background: rgba(255, 215, 0, 0.1);
+      border-color: #ffd700;
+    }
+
+    .alert-content {
+      flex: 1;
+    }
+
+    .alert-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e0e6ed;
+      margin-bottom: 4px;
+    }
+
+    .alert-location {
+      font-size: 12px;
+      color: #8892b0;
+    }
+
+    .detail-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .stat-item {
+      background: rgba(13, 17, 35, 0.8);
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 11px;
+      color: #8892b0;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      display: block;
+      font-size: 18px;
+      font-weight: 700;
+      color: #00d4ff;
+    }
+
+    .chart-container {
+      height: 180px;
+      background: rgba(13, 17, 35, 0.8);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 1400px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .left-sidebar, .center-panel, .right-sidebar {
+        width: 100%;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1a1f3a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #2d3561;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo-icon">⚡</div>
+        <div>
+          <h1>Smart Campus Energy</h1>
+          <p class="subtitle">Real-time Monitoring System</p>
+        </div>
+      </div>
+      <div class="current-time-display">
+        <span id="currentTime">--:--:--</span>
+        <span class="time-period" id="timePeriod">Day</span>
+      </div>
+      <div class="status-indicator">
+        <span class="status-dot"></span>
+        <span>Live</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <!-- Left Sidebar -->
+    <div class="left-sidebar">
+      <div class="full-width-section">
+        <h2 class="section-title">Live Metrics</h2>
+        <div class="metrics-grid" id="metricsGrid"></div>
+      </div>
+
+      <div class="full-width-section">
+        <h2 class="section-title">Thresholds</h2>
+        <div class="threshold-indicator">
+          <div class="threshold-item day">
+            <div class="threshold-label">Day (6AM-6PM)</div>
+            <div class="threshold-value" style="color: #ffd700;">150 kW</div>
+          </div>
+          <div class="threshold-item night">
+            <div class="threshold-label">Night (6PM-6AM)</div>
+            <div class="threshold-value" style="color: #0099ff;">80 kW</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="full-width-section">
+        <h2 class="section-title">Energy Predictions</h2>
+        <div class="predictions-panel" id="predictionsPanel"></div>
+      </div>
+
+      <div class="full-width-section">
+        <h2 class="section-title">Recommended Actions</h2>
+        <div class="countermeasures-panel" id="countermeasuresPanel"></div>
+      </div>
+    </div>
+
+    <!-- Center Panel -->
+    <div class="center-panel">
+      <div class="full-width-section">
+        <h2 class="section-title">24-Hour Energy Consumption Analysis</h2>
+        <div class="time-energy-chart">
+          <canvas id="timeEnergyChart"></canvas>
+        </div>
+      </div>
+
+      <div class="full-width-section">
+        <h2 class="section-title">Campus Overview</h2>
+        <div class="campus-map">
+          <svg viewBox="0 0 800 600" class="map-svg" id="campusMap"></svg>
+        </div>
+        <div class="map-legend">
+          <div class="legend-item">
+            <span class="legend-dot" style="background: #00ff88;"></span>
+            <span>Normal</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background: #ffd700;"></span>
+            <span>Warning</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background: #ff6b6b;"></span>
+            <span>Critical</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="right-sidebar">
+      <div class="full-width-section">
+        <h2 class="section-title">System Alerts</h2>
+        <div class="alerts-list" id="alertsList"></div>
+      </div>
+
+      <div class="full-width-section">
+        <h2 class="section-title" id="buildingName">Building Details</h2>
+        <div class="detail-stats" id="detailStats"></div>
+        <div class="chart-container">
+          <canvas id="powerChart"></canvas>
+        </div>
+      </div>
+
+      <div class="full-width-section">
+        <h2 class="section-title">Building Schedules</h2>
+        <div class="building-selector" id="buildingSelector"></div>
+        <div class="timetable-container" id="timetableContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const buildings = [
+      { id: 1, name: 'Engineering', x: 100, y: 100, width: 120, height: 80 },
+      { id: 2, name: 'Science Lab', x: 280, y: 120, width: 100, height: 100 },
+      { id: 3, name: 'Library', x: 450, y: 80, width: 140, height: 90 },
+      { id: 4, name: 'Dorm A', x: 120, y: 280, width: 90, height: 120 },
+      { id: 5, name: 'Dorm B', x: 260, y: 300, width: 90, height: 120 },
+      { id: 6, name: 'Sports Center', x: 420, y: 250, width: 160, height: 100 },
+      { id: 7, name: 'Admin', x: 640, y: 150, width: 100, height: 80 }
+    ];
+
+    let selectedBuilding = null;
+    let powerChart = null;
+    let timeEnergyChart = null;
+    const sparklineData = {};
+    
+    const buildingTimetables = {
+      'Engineering': [
+        { time: '06:00-08:00', activity: 'Morning Classes', occupancy: 45 },
+        { time: '08:00-10:00', activity: 'Mechanical Lab', occupancy: 70 },
+        { time: '10:00-12:00', activity: 'Design Studio', occupancy: 85 },
+        { time: '12:00-14:00', activity: 'Lunch Break', occupancy: 30 },
+        { time: '14:00-16:00', activity: 'Project Work', occupancy: 65 },
+        { time: '16:00-18:00', activity: 'Workshops', occupancy: 55 },
+        { time: '18:00-20:00', activity: 'Evening Labs', occupancy: 40 },
+        { time: '20:00-22:00', activity: 'Maintenance', occupancy: 10 }
+      ],
+      'Science Lab': [
+        { time: '06:00-08:00', activity: 'Setup', occupancy: 15 },
+        { time: '08:00-10:00', activity: 'Chemistry Lab', occupancy: 80 },
+        { time: '10:00-12:00', activity: 'Physics Experiments', occupancy: 75 },
+        { time: '12:00-14:00', activity: 'Lunch Break', occupancy: 25 },
+        { time: '14:00-16:00', activity: 'Biology Lab', occupancy: 85 },
+        { time: '16:00-18:00', activity: 'Research Sessions', occupancy: 60 },
+        { time: '18:00-20:00', activity: 'Cleanup', occupancy: 20 },
+        { time: '20:00-22:00', activity: 'Security Only', occupancy: 5 }
+      ],
+      'Library': [
+        { time: '06:00-08:00', activity: 'Early Study', occupancy: 20 },
+        { time: '08:00-10:00', activity: 'Morning Study', occupancy: 50 },
+        { time: '10:00-12:00', activity: 'Peak Hours', occupancy: 85 },
+        { time: '12:00-14:00', activity: 'Lunch Study', occupancy: 60 },
+        { time: '14:00-16:00', activity: 'Afternoon Study', occupancy: 90 },
+        { time: '16:00-18:00', activity: 'Group Study', occupancy: 75 },
+        { time: '18:00-20:00', activity: 'Evening Study', occupancy: 65 },
+        { time: '20:00-22:00', activity: 'Late Study', occupancy: 40 }
+      ],
+      'Dorm A': [
+        { time: '06:00-08:00', activity: 'Wake Up', occupancy: 70 },
+        { time: '08:00-10:00', activity: 'Classes Time', occupancy: 20 },
+        { time: '10:00-12:00', activity: 'Low Activity', occupancy: 15 },
+        { time: '12:00-14:00', activity: 'Lunch Return', occupancy: 40 },
+        { time: '14:00-16:00', activity: 'Minimal', occupancy: 10 },
+        { time: '16:00-18:00', activity: 'Return Time', occupancy: 50 },
+        { time: '18:00-20:00', activity: 'Dinner Time', occupancy: 85 },
+        { time: '20:00-22:00', activity: 'Night Hours', occupancy: 95 }
+      ],
+      'Dorm B': [
+        { time: '06:00-08:00', activity: 'Wake Up', occupancy: 65 },
+        { time: '08:00-10:00', activity: 'Classes Time', occupancy: 25 },
+        { time: '10:00-12:00', activity: 'Low Activity', occupancy: 20 },
+        { time: '12:00-14:00', activity: 'Lunch Return', occupancy: 45 },
+        { time: '14:00-16:00', activity: 'Minimal', occupancy: 15 },
+        { time: '16:00-18:00', activity: 'Return Time', occupancy: 55 },
+        { time: '18:00-20:00', activity: 'Dinner Time', occupancy: 80 },
+        { time: '20:00-22:00', activity: 'Night Hours', occupancy: 90 }
+      ],
+      'Sports Center': [
+        { time: '06:00-08:00', activity: 'Morning Workout', occupancy: 35 },
+        { time: '08:00-10:00', activity: 'Team Practice', occupancy: 50 },
+        { time: '10:00-12:00', activity: 'Classes', occupancy: 40 },
+        { time: '12:00-14:00', activity: 'Lunch Break', occupancy: 20 },
+        { time: '14:00-16:00', activity: 'Afternoon Sports', occupancy: 60 },
+        { time: '16:00-18:00', activity: 'Peak Hours', occupancy: 85 },
+        { time: '18:00-20:00', activity: 'Evening Games', occupancy: 75 },
+        { time: '20:00-22:00', activity: 'Late Sessions', occupancy: 30 }
+      ],
+      'Admin': [
+        { time: '06:00-08:00', activity: 'Closed', occupancy: 5 },
+        { time: '08:00-10:00', activity: 'Office Hours', occupancy: 70 },
+        { time: '10:00-12:00', activity: 'Peak Hours', occupancy: 85 },
+        { time: '12:00-14:00', activity: 'Lunch Break', occupancy: 40 },
+        { time: '14:00-16:00', activity: 'Afternoon Work', occupancy: 75 },
+        { time: '16:00-18:00', activity: 'Late Hours', occupancy: 50 },
+        { time: '18:00-20:00', activity: 'Closing', occupancy: 20 },
+        { time: '20:00-22:00', activity: 'Security Only', occupancy: 5 }
+      ]
+    };
+
+    let selectedTimetableBuilding = 'Engineering';
+
+    const DAY_THRESHOLD = 150;
+    const NIGHT_THRESHOLD = 80;
+
+    function getStatusColor(status) {
+      switch (status) {
+        case 'normal': return '#00ff88';
+        case 'warning': return '#ffd700';
+        case 'critical': return '#ff6b6b';
+        default: return '#8892b0';
+      }
+    }
+
+    function generateMockData() {
+      const buildingsData = buildings.map(b => {
+        const power = 50 + Math.random() * 150;
+        const status = power > 180 ? 'critical' : power > 140 ? 'warning' : 'normal';
+        
+        return {
+          ...b,
+          power,
+          peakLoad: power * 1.3,
+          occupancy: Math.floor(40 + Math.random() * 60),
+          status
+        };
+      });
+
+      const totalPower = buildingsData.reduce((sum, b) => sum + b.power, 0);
+      
+      const alerts = buildingsData
+        .filter(b => b.status !== 'normal')
+        .map(b => ({
+          severity: b.status,
+          title: b.status === 'critical' ? 'High Power Consumption' : 'Elevated Usage',
+          location: b.name
+        }));
+
+      return {
+        totalPower,
+        powerChange: (Math.random() - 0.5) * 10,
+        energyToday: totalPower * 0.8,
+        energyChange: (Math.random() - 0.5) * 8,
+        buildings: buildingsData,
+        alerts
+      };
+    }
+
+    function updateMetrics(data) {
+      const metrics = [
+        { title: 'Total Power', value: data.totalPower.toFixed(1), unit: 'kW', change: data.powerChange, icon: '⚡', color: '#00d4ff' },
+        { title: 'Energy Today', value: data.energyToday.toFixed(1), unit: 'kWh', change: data.energyChange, icon: '📊', color: '#00ff88' }
+      ];
+
+      const grid = document.getElementById('metricsGrid');
+      grid.innerHTML = metrics.map(m => {
+        if (!sparklineData[m.title]) sparklineData[m.title] = [];
+        sparklineData[m.title].push(parseFloat(m.value));
+        if (sparklineData[m.title].length > 20) sparklineData[m.title].shift();
+
+        const changeClass = m.change > 0 ? 'positive' : 'negative';
+        const arrow = m.change > 0 ? '↑' : '↓';
+
+        return `
+          <div class="metric-card" style="border-color: ${m.color}40;">
+            <div class="metric-header">
+              <span class="metric-icon">${m.icon}</span>
+              <span class="metric-title">${m.title}</span>
+            </div>
+            <div class="metric-value">
+              <span class="value">${m.value}</span>
+              <span class="unit">${m.unit}</span>
+            </div>
+            <span class="change ${changeClass}">${arrow} ${Math.abs(m.change).toFixed(1)}%</span>
+            <canvas class="sparkline" id="spark-${m.title}"></canvas>
+          </div>
+        `;
+      }).join('');
+
+      metrics.forEach(m => {
+        const canvas = document.getElementById(`spark-${m.title}`);
+        if (canvas) drawSparkline(canvas, sparklineData[m.title], m.color);
+      });
+    }
+
+    function drawSparkline(canvas, data, color) {
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width = canvas.offsetWidth;
+      const height = canvas.height = 40;
+
+      ctx.clearRect(0, 0, width, height);
+
+      if (data.length < 2) return;
+
+      const max = Math.max(...data);
+      const min = Math.min(...data);
+      const range = max - min || 1;
+
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+
+      data.forEach((val, i) => {
+        const x = (i / (data.length - 1)) * width;
+        const y = height - ((val - min) / range) * height;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+
+      ctx.stroke();
+
+      const gradient = ctx.createLinearGradient(0, 0, 0, height);
+      gradient.addColorStop(0, color + '40');
+      gradient.addColorStop(1, color + '00');
+      ctx.fillStyle = gradient;
+      ctx.lineTo(width, height);
+      ctx.lineTo(0, height);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function updateCampusMap(data) {
+      const svg = document.getElementById('campusMap');
+      svg.innerHTML = `
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <g class="grid-lines" opacity="0.1">
+          ${[...Array(20)].map((_, i) => `<line x1="0" y1="${i * 30}" x2="800" y2="${i * 30}" stroke="#00d4ff" stroke-width="1"/>`).join('')}
+          ${[...Array(27)].map((_, i) => `<line x1="${i * 30}" y1="0" x2="${i * 30}" y2="600" stroke="#00d4ff" stroke-width="1"/>`).join('')}
+        </g>
+        ${data.buildings.map(b => `
+          <g class="building ${selectedBuilding?.id === b.id ? 'selected' : ''}" onclick="selectBuilding(${b.id})">
+            <rect x="${b.x}" y="${b.y}" width="${b.width}" height="${b.height}" 
+                  fill="rgba(26, 31, 58, 0.8)" stroke="${getStatusColor(b.status)}" 
+                  stroke-width="2" rx="4"/>
+            <circle cx="${b.x + b.width / 2}" cy="${b.y + b.height / 2}" r="8" 
+                    fill="${getStatusColor(b.status)}" filter="url(#glow)" class="status-indicator-dot"/>
+            <text x="${b.x + b.width / 2}" y="${b.y - 10}" text-anchor="middle" 
+                  fill="#e0e6ed" font-size="14" font-weight="600">${b.name}</text>
+            <text x="${b.x + b.width / 2}" y="${b.y + b.height + 20}" text-anchor="middle" 
+                  fill="#8892b0" font-size="12">${b.power.toFixed(1)} kW</text>
+          </g>
+        `).join('')}
+      `;
+    }
+
+    function updateAlerts(data) {
+      const list = document.getElementById('alertsList');
+      if (data.alerts.length === 0) {
+        list.innerHTML = '<div style="text-align: center; padding: 40px; color: #8892b0;">✓ All systems operating normally</div>';
+      } else {
+        list.innerHTML = data.alerts.map(a => `
+          <div class="alert-item ${a.severity}">
+            <span style="font-size: 20px;">${a.severity === 'critical' ? '🔴' : '⚠️'}</span>
+            <div class="alert-content">
+              <div class="alert-title">${a.title}</div>
+              <div class="alert-location">${a.location}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function selectBuilding(id) {
+      const data = generateMockData();
+      selectedBuilding = data.buildings.find(b => b.id === id);
+      
+      document.getElementById('buildingName').textContent = selectedBuilding.name;
+      document.getElementById('detailStats').innerHTML = `
+        <div class="stat-item">
+          <span class="stat-label">Current Power</span>
+          <span class="stat-value">${selectedBuilding.power.toFixed(1)} kW</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Peak Load</span>
+          <span class="stat-value">${selectedBuilding.peakLoad.toFixed(1)} kW</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Occupancy</span>
+          <span class="stat-value">${selectedBuilding.occupancy}%</span>
+        </div>
+      `;
+
+      updatePowerChart();
+      updateCampusMap(data);
+    }
+
+    function updatePowerChart() {
+      const ctx = document.getElementById('powerChart').getContext('2d');
+      
+      if (powerChart) powerChart.destroy();
+
+      const labels = Array.from({ length: 20 }, (_, i) => `${i}m`);
+      const data = Array.from({ length: 20 }, () => 
+        selectedBuilding.power + (Math.random() - 0.5) * 20
+      );
+
+      powerChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Power (kW)',
+            data,
+            borderColor: '#00d4ff',
+            backgroundColor: 'rgba(0, 212, 255, 0.1)',
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: {
+              grid: { color: 'rgba(136, 146, 176, 0.1)' },
+              ticks: { color: '#8892b0' }
+            },
+            x: {
+              grid: { color: 'rgba(136, 146, 176, 0.1)' },
+              ticks: { color: '#8892b0' }
+            }
+          }
+        }
+      });
+    }
+
+    window.selectBuilding = selectBuilding;
+
+    function updateTimeDisplay() {
+      const now = new Date();
+      const hours = now.getHours();
+      const timeStr = now.toLocaleTimeString();
+      const isDayTime = hours >= 6 && hours < 18;
+      
+      document.getElementById('currentTime').textContent = timeStr;
+      const periodEl = document.getElementById('timePeriod');
+      periodEl.textContent = isDayTime ? 'Day' : 'Night';
+      periodEl.className = `time-period ${isDayTime ? 'day' : 'night'}`;
+    }
+
+    function updateBuildingSelector() {
+      const selector = document.getElementById('buildingSelector');
+      selector.innerHTML = Object.keys(buildingTimetables).map(building => `
+        <button class="building-tab ${building === selectedTimetableBuilding ? 'active' : ''}" 
+                onclick="selectTimetableBuilding('${building}')">
+          ${building}
+        </button>
+      `).join('');
+    }
+
+    function selectTimetableBuilding(building) {
+      selectedTimetableBuilding = building;
+      updateBuildingSelector();
+      updateTimetable();
+    }
+
+    window.selectTimetableBuilding = selectTimetableBuilding;
+
+    function updateTimetable() {
+      const now = new Date();
+      const currentHour = now.getHours();
+      
+      const timetable = buildingTimetables[selectedTimetableBuilding];
+      const container = document.getElementById('timetableContainer');
+      
+      container.innerHTML = timetable.map(slot => {
+        const [startTime] = slot.time.split('-');
+        const slotHour = parseInt(startTime.split(':')[0]);
+        
+        let status = 'inactive';
+        if (slotHour === currentHour) status = 'active';
+        else if (slotHour === currentHour + 1) status = 'upcoming';
+        
+        return `
+          <div class="timetable-slot ${status}">
+            <div class="slot-time">${slot.time}</div>
+            <div class="slot-activity">${slot.activity}</div>
+            <div class="slot-occupancy">👥 Occupancy: ${slot.occupancy}%</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updatePredictions(currentPower) {
+      const now = new Date();
+      const currentHour = now.getHours();
+      const isDayTime = currentHour >= 6 && currentHour < 18;
+      
+      const nextHourPrediction = currentPower * (0.95 + Math.random() * 0.1);
+      const peakPrediction = isDayTime ? currentPower * 1.2 : currentPower * 0.8;
+      const dailyTotal = currentPower * 24 * 0.85;
+      
+      const panel = document.getElementById('predictionsPanel');
+      panel.innerHTML = `
+        <div class="prediction-item">
+          <span class="prediction-label">Next Hour</span>
+          <span class="prediction-value">${nextHourPrediction.toFixed(1)} kW</span>
+        </div>
+        <div class="prediction-item">
+          <span class="prediction-label">Expected Peak Today</span>
+          <span class="prediction-value">${peakPrediction.toFixed(1)} kW</span>
+        </div>
+        <div class="prediction-item">
+          <span class="prediction-label">Daily Total (Est.)</span>
+          <span class="prediction-value">${dailyTotal.toFixed(1)} kWh</span>
+        </div>
+        <div class="prediction-item">
+          <span class="prediction-label">Threshold Status</span>
+          <span class="prediction-value" style="color: ${currentPower > (isDayTime ? DAY_THRESHOLD : NIGHT_THRESHOLD) ? '#ff6b6b' : '#00ff88'}">
+            ${currentPower > (isDayTime ? DAY_THRESHOLD : NIGHT_THRESHOLD) ? 'Exceeded' : 'Normal'}
+          </span>
+        </div>
+      `;
+    }
+
+    function updateCountermeasures(currentPower, data) {
+      const now = new Date();
+      const currentHour = now.getHours();
+      const isDayTime = currentHour >= 6 && currentHour < 18;
+      const threshold = isDayTime ? DAY_THRESHOLD : NIGHT_THRESHOLD;
+      
+      const measures = [];
+      
+      if (currentPower > threshold * 1.2) {
+        measures.push({
+          priority: 'high-priority',
+          icon: '🚨',
+          title: 'Critical: Reduce HVAC Load',
+          desc: `Power ${((currentPower - threshold) / threshold * 100).toFixed(0)}% above threshold. Adjust temperature setpoints by 2°C.`
+        });
+      }
+      
+      if (currentPower > threshold) {
+        measures.push({
+          priority: 'medium-priority',
+          icon: '💡',
+          title: 'Optimize Lighting Systems',
+          desc: 'Dim non-essential areas by 30%. Estimated savings: 15-20 kW.'
+        });
+      }
+      
+      const highOccupancyBuildings = data.buildings.filter(b => b.occupancy > 80);
+      if (highOccupancyBuildings.length > 0) {
+        measures.push({
+          priority: 'medium-priority',
+          icon: '🏢',
+          title: 'High Occupancy Alert',
+          desc: `${highOccupancyBuildings.map(b => b.name).join(', ')} at capacity. Monitor closely.`
+        });
+      }
+      
+      if (!isDayTime && currentPower > NIGHT_THRESHOLD) {
+        measures.push({
+          priority: 'high-priority',
+          icon: '🌙',
+          title: 'Night Mode Activation',
+          desc: 'Switch to energy-saving mode. Disable non-essential systems.'
+        });
+      }
+      
+      measures.push({
+        priority: 'low-priority',
+        icon: '📊',
+        title: 'Schedule Maintenance',
+        desc: 'Plan equipment checks during low-usage hours (2AM-5AM).'
+      });
+      
+      const panel = document.getElementById('countermeasuresPanel');
+      panel.innerHTML = measures.map(m => `
+        <div class="countermeasure-item ${m.priority}">
+          <span class="countermeasure-icon">${m.icon}</span>
+          <div class="countermeasure-content">
+            <div class="countermeasure-title">${m.title}</div>
+            <div class="countermeasure-desc">${m.desc}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateTimeEnergyChart() {
+      const ctx = document.getElementById('timeEnergyChart').getContext('2d');
+      
+      if (timeEnergyChart) timeEnergyChart.destroy();
+      
+      const now = new Date();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+      
+      // Generate 24 hours of data points
+      const hours = Array.from({ length: 24 }, (_, i) => i);
+      const labels = hours.map(h => `${h.toString().padStart(2, '0')}:00`);
+      
+      // Historical + current data (continuous)
+      const actualData = hours.map(h => {
+        if (h > currentHour) return null;
+        const isDayHour = h >= 6 && h < 18;
+        const baseLoad = isDayHour ? 120 : 60;
+        const variance = Math.sin(h * 0.5) * 30 + Math.random() * 15;
+        return baseLoad + variance;
+      });
+      
+      // Fill current hour with partial data
+      if (actualData[currentHour] !== null) {
+        actualData[currentHour] = actualData[currentHour] * (currentMinute / 60);
+      }
+      
+      // Predicted data (continuous from current point)
+      const predictedData = hours.map(h => {
+        if (h <= currentHour) return actualData[h];
+        const isDayHour = h >= 6 && h < 18;
+        const baseLoad = isDayHour ? 115 : 55;
+        const variance = Math.sin(h * 0.5) * 28 + Math.random() * 12;
+        return baseLoad + variance;
+      });
+      
+      // Threshold lines
+      const dayThresholdLine = hours.map(h => (h >= 6 && h < 18) ? DAY_THRESHOLD : null);
+      const nightThresholdLine = hours.map(h => (h < 6 || h >= 18) ? NIGHT_THRESHOLD : null);
+      
+      timeEnergyChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Actual Consumption',
+              data: actualData,
+              borderColor: '#00d4ff',
+              backgroundColor: 'rgba(0, 212, 255, 0.2)',
+              fill: true,
+              tension: 0.4,
+              pointRadius: 3,
+              pointHoverRadius: 6,
+              spanGaps: false
+            },
+            {
+              label: 'Predicted Consumption',
+              data: predictedData,
+              borderColor: '#00ff88',
+              backgroundColor: 'rgba(0, 255, 136, 0.1)',
+              borderDash: [5, 5],
+              fill: true,
+              tension: 0.4,
+              pointRadius: 2,
+              pointHoverRadius: 5,
+              spanGaps: true
+            },
+            {
+              label: 'Day Threshold',
+              data: dayThresholdLine,
+              borderColor: '#ffd700',
+              borderWidth: 2,
+              borderDash: [10, 5],
+              pointRadius: 0,
+              fill: false,
+              spanGaps: true
+            },
+            {
+              label: 'Night Threshold',
+              data: nightThresholdLine,
+              borderColor: '#0099ff',
+              borderWidth: 2,
+              borderDash: [10, 5],
+              pointRadius: 0,
+              fill: false,
+              spanGaps: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                color: '#e0e6ed',
+                font: { size: 11 },
+                usePointStyle: true,
+                padding: 12
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(13, 17, 35, 0.95)',
+              titleColor: '#e0e6ed',
+              bodyColor: '#8892b0',
+              borderColor: '#2d3561',
+              borderWidth: 1,
+              padding: 10,
+              displayColors: true,
+              callbacks: {
+                label: function(context) {
+                  let label = context.dataset.label || '';
+                  if (label) {
+                    label += ': ';
+                  }
+                  if (context.parsed.y !== null) {
+                    label += context.parsed.y.toFixed(1) + ' kW';
+                  }
+                  return label;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Power Consumption (kW)',
+                color: '#e0e6ed',
+                font: { size: 13, weight: 'bold' }
+              },
+              grid: { color: 'rgba(136, 146, 176, 0.1)' },
+              ticks: { 
+                color: '#8892b0',
+                font: { size: 10 }
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Time of Day (24-Hour Format)',
+                color: '#e0e6ed',
+                font: { size: 13, weight: 'bold' }
+              },
+              grid: { color: 'rgba(136, 146, 176, 0.1)' },
+              ticks: { 
+                color: '#8892b0',
+                font: { size: 9 },
+                maxRotation: 45,
+                minRotation: 45
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function update() {
+      const data = generateMockData();
+      updateMetrics(data);
+      updateCampusMap(data);
+      updateAlerts(data);
+      updateTimeDisplay();
+      updateBuildingSelector();
+      updateTimetable();
+      updatePredictions(data.totalPower);
+      updateCountermeasures(data.totalPower, data);
+      updateTimeEnergyChart();
+    }
+
+    update();
+    setInterval(update, 2000);
+  </script>
+</body>
+</html>

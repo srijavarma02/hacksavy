@@ -1,0 +1,408 @@
+{
+  "id": "2026-02-13-064300",
+  "generatedAt": "2026-02-13T01:13:00.562Z",
+  "period": {
+    "start": "2026-02-12T01:13:00.562Z",
+    "end": "2026-02-13T01:13:00.562Z"
+  },
+  "summary": {
+    "totalEnergy": 23516.45,
+    "totalWastage": 5516.45,
+    "totalAlerts": 0,
+    "criticalIssues": 0,
+    "sustainabilityScore": 48,
+    "keyHighlights": [
+      "Limited historical data available for trend analysis"
+    ]
+  },
+  "buildingDetails": [
+    {
+      "buildingId": 1,
+      "buildingName": "Engineering Block",
+      "metrics": {
+        "buildingId": 1,
+        "buildingName": "Engineering Block",
+        "totalEnergy": 3488.72,
+        "avgPower": 145.36,
+        "peakPower": 203.51,
+        "avgOccupancy": 64.2,
+        "avgTemperature": 21.9,
+        "totalWastage": 608.72,
+        "wastagePercent": 21.1
+      },
+      "status": "good",
+      "issues": [
+        "High energy wastage: 21.1%"
+      ],
+      "achievements": [
+        "Optimal temperature maintained: 21.9°C",
+        "Healthy occupancy levels: 64.2%"
+      ]
+    },
+    {
+      "buildingId": 2,
+      "buildingName": "Science Lab",
+      "metrics": {
+        "buildingId": 2,
+        "buildingName": "Science Lab",
+        "totalEnergy": 4568.91,
+        "avgPower": 190.37,
+        "peakPower": 266.52,
+        "avgOccupancy": 72.9,
+        "avgTemperature": 22.3,
+        "totalWastage": 968.91,
+        "wastagePercent": 26.9
+      },
+      "status": "good",
+      "issues": [
+        "High energy wastage: 26.9%"
+      ],
+      "achievements": [
+        "Optimal temperature maintained: 22.3°C",
+        "Healthy occupancy levels: 72.9%"
+      ]
+    },
+    {
+      "buildingId": 3,
+      "buildingName": "Library",
+      "metrics": {
+        "buildingId": 3,
+        "buildingName": "Library",
+        "totalEnergy": 2627.32,
+        "avgPower": 109.47,
+        "peakPower": 153.26,
+        "avgOccupancy": 56.9,
+        "avgTemperature": 22.6,
+        "totalWastage": 707.32,
+        "wastagePercent": 36.8
+      },
+      "status": "good",
+      "issues": [
+        "High energy wastage: 36.8%"
+      ],
+      "achievements": [
+        "Optimal temperature maintained: 22.6°C",
+        "Healthy occupancy levels: 56.9%"
+      ]
+    },
+    {
+      "buildingId": 4,
+      "buildingName": "Dorm A",
+      "metrics": {
+        "buildingId": 4,
+        "buildingName": "Dorm A",
+        "totalEnergy": 3195.37,
+        "avgPower": 133.14,
+        "peakPower": 186.4,
+        "avgOccupancy": 83.4,
+        "avgTemperature": 23.8,
+        "totalWastage": 795.37,
+        "wastagePercent": 33.1
+      },
+      "status": "good",
+      "issues": [
+        "High energy wastage: 33.1%"
+      ],
+      "achievements": []
+    },
+    {
+      "buildingId": 5,
+      "buildingName": "Dorm B",
+      "metrics": {
+        "buildingId": 5,
+        "buildingName": "Dorm B",
+        "totalEnergy": 3193.23,
+        "avgPower": 133.05,
+        "peakPower": 186.27,
+        "avgOccupancy": 55.6,
+        "avgTemperature": 23.5,
+        "totalWastage": 793.23,
+        "wastagePercent": 33.1
+      },
+      "status": "good",
+      "issues": [
+        "High energy wastage: 33.1%"
+      ],
+      "achievements": [
+        "Healthy occupancy levels: 55.6%"
+      ]
+    },
+    {
+      "buildingId": 6,
+      "buildingName": "Admin Building",
+      "metrics": {
+        "buildingId": 6,
+        "buildingName": "Admin Building",
+        "totalEnergy": 2794.1,
+        "avgPower": 116.42,
+        "peakPower": 162.99,
+        "avgOccupancy": 55,
+        "avgTemperature": 24.9,
+        "totalWastage": 634.1,
+        "wastagePercent": 29.4
+      },
+      "status": "needs_attention",
+      "issues": [
+        "High energy wastage: 29.4%",
+        "Temperature above comfort range: 24.9°C"
+      ],
+      "achievements": [
+        "Healthy occupancy levels: 55.0%"
+      ]
+    },
+    {
+      "buildingId": 7,
+      "buildingName": "Sports Complex",
+      "metrics": {
+        "buildingId": 7,
+        "buildingName": "Sports Complex",
+        "totalEnergy": 3648.8,
+        "avgPower": 152.03,
+        "peakPower": 212.85,
+        "avgOccupancy": 63.1,
+        "avgTemperature": 23,
+        "totalWastage": 1008.8,
+        "wastagePercent": 38.2
+      },
+      "status": "good",
+      "issues": [
+        "High energy wastage: 38.2%"
+      ],
+      "achievements": [
+        "Optimal temperature maintained: 23.0°C",
+        "Healthy occupancy levels: 63.1%"
+      ]
+    }
+  ],
+  "alertSummary": {
+    "total": 0,
+    "critical": 0,
+    "warning": 0,
+    "info": 0,
+    "avgResponseTime": 0,
+    "topAlerts": []
+  },
+  "anomalyInsights": {
+    "totalDetected": 0,
+    "byBuilding": {},
+    "criticalAnomalies": [],
+    "patterns": [
+      "ML models trained on 1000 data points"
+    ]
+  },
+  "sustainability": {
+    "totalCO2": 9541.14,
+    "energyIntensity": 0.596,
+    "renewablePercent": 22.3,
+    "costSavings": 228.99,
+    "netZeroProgress": 45.6
+  },
+  "trends": [],
+  "recommendations": [
+    {
+      "priority": "high",
+      "category": "energy",
+      "title": "Buildings with High Energy Wastage",
+      "description": "7 building(s) showing wastage above 15%: Engineering Block, Science Lab, Library, Dorm A, Dorm B, Admin Building, Sports Complex. Consider scheduling energy audits.",
+      "expectedImpact": "Energy audits typically identify 10-20% savings opportunities",
+      "buildingIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    }
+  ],
+  "charts": [
+    {
+      "type": "bar",
+      "title": "Energy Consumption by Building",
+      "data": {
+        "labels": [
+          "Engineering Block",
+          "Science Lab",
+          "Library",
+          "Dorm A",
+          "Dorm B",
+          "Admin Building",
+          "Sports Complex"
+        ],
+        "datasets": [
+          {
+            "label": "Total Energy (kWh)",
+            "data": [
+              3488.72,
+              4568.91,
+              2627.32,
+              3195.37,
+              3193.23,
+              2794.1,
+              3648.8
+            ],
+            "backgroundColor": "rgba(54, 162, 235, 0.6)",
+            "borderColor": "rgba(54, 162, 235, 1)",
+            "borderWidth": 1
+          }
+        ]
+      },
+      "config": {
+        "responsive": true,
+        "scales": {
+          "y": {
+            "beginAtZero": true,
+            "title": {
+              "display": true,
+              "text": "Energy (kWh)"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "bar",
+      "title": "Energy Wastage by Building",
+      "data": {
+        "labels": [
+          "Engineering Block",
+          "Science Lab",
+          "Library",
+          "Dorm A",
+          "Dorm B",
+          "Admin Building",
+          "Sports Complex"
+        ],
+        "datasets": [
+          {
+            "label": "Wastage (%)",
+            "data": [
+              21.1,
+              26.9,
+              36.8,
+              33.1,
+              33.1,
+              29.4,
+              38.2
+            ],
+            "backgroundColor": [
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(255, 99, 132, 0.6)"
+            ],
+            "borderColor": [
+              "rgba(255, 99, 132, 1)",
+              "rgba(255, 99, 132, 1)",
+              "rgba(255, 99, 132, 1)",
+              "rgba(255, 99, 132, 1)",
+              "rgba(255, 99, 132, 1)",
+              "rgba(255, 99, 132, 1)",
+              "rgba(255, 99, 132, 1)"
+            ],
+            "borderWidth": 1
+          }
+        ]
+      },
+      "config": {
+        "responsive": true,
+        "scales": {
+          "y": {
+            "beginAtZero": true,
+            "title": {
+              "display": true,
+              "text": "Wastage (%)"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "pie",
+      "title": "Alert Distribution by Severity",
+      "data": {
+        "labels": [
+          "Critical",
+          "Warning",
+          "Info"
+        ],
+        "datasets": [
+          {
+            "data": [
+              0,
+              0,
+              0
+            ],
+            "backgroundColor": [
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(255, 206, 86, 0.6)",
+              "rgba(54, 162, 235, 0.6)"
+            ],
+            "borderColor": [
+              "rgba(255, 99, 132, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(54, 162, 235, 1)"
+            ],
+            "borderWidth": 1
+          }
+        ]
+      },
+      "config": {
+        "responsive": true,
+        "plugins": {
+          "legend": {
+            "position": "bottom"
+          }
+        }
+      }
+    },
+    {
+      "type": "bar",
+      "title": "Sustainability Metrics",
+      "data": {
+        "labels": [
+          "Renewable %",
+          "Net Zero Progress %",
+          "Energy Intensity (kWh/m²)"
+        ],
+        "datasets": [
+          {
+            "label": "Value",
+            "data": [
+              22.3,
+              45.6,
+              5.96
+            ],
+            "backgroundColor": [
+              "rgba(75, 192, 192, 0.6)",
+              "rgba(153, 102, 255, 0.6)",
+              "rgba(255, 159, 64, 0.6)"
+            ],
+            "borderColor": [
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)"
+            ],
+            "borderWidth": 1
+          }
+        ]
+      },
+      "config": {
+        "responsive": true,
+        "scales": {
+          "y": {
+            "beginAtZero": true,
+            "title": {
+              "display": true,
+              "text": "Value"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

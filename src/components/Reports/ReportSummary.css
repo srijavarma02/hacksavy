@@ -1,0 +1,157 @@
+.report-summary {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(136, 146, 176, 0.1);
+  margin-bottom: 20px;
+}
+
+.summary-header {
+  margin-bottom: 20px;
+}
+
+.summary-header h2 {
+  color: #ccd6f6;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.metric-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(136, 146, 176, 0.1);
+  transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(0, 212, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.metric-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.metric-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.metric-label {
+  color: #8892b0;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metric-value {
+  color: #ccd6f6;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.metric-value.excellent {
+  color: #00ff88;
+}
+
+.metric-value.good {
+  color: #00d4ff;
+}
+
+.metric-value.warning {
+  color: #ffa500;
+}
+
+.metric-value.critical {
+  color: #ff6b6b;
+}
+
+.metric-subtext {
+  color: #8892b0;
+  font-size: 0.8rem;
+  margin-top: 2px;
+}
+
+.highlights-section {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(136, 146, 176, 0.1);
+}
+
+.highlights-section h3 {
+  color: #ccd6f6;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.highlights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.highlight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(0, 212, 255, 0.05);
+  border-radius: 6px;
+  border-left: 3px solid #00d4ff;
+}
+
+.highlight-bullet {
+  color: #00d4ff;
+  font-size: 1.2rem;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.highlight-text {
+  color: #ccd6f6;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.loading {
+  color: #8892b0;
+  text-align: center;
+  padding: 40px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card {
+    padding: 12px;
+  }
+
+  .metric-icon {
+    font-size: 1.5rem;
+  }
+
+  .metric-value {
+    font-size: 1.3rem;
+  }
+}

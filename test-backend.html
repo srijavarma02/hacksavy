@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Backend Test</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 40px;
+            background: #0f172a;
+            color: white;
+        }
+        .status {
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+        .success { background: #10b981; }
+        .error { background: #ef4444; }
+        .loading { background: #f59e0b; }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover { background: #2563eb; }
+        pre {
+            background: #1e293b;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            max-height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔌 Backend Connection Test</h1>
+    
+    <div id="status" class="status loading">Testing backend connection...</div>
+    
+    <button onclick="testBackend()">Test Backend</button>
+    <button onclick="openDashboard()">Open Dashboard</button>
+    <button onclick="location.reload()">Refresh Test</button>
+    
+    <h2>Backend Response:</h2>
+    <pre id="response">Waiting...</pre>
+
+    <script>
+        async function testBackend() {
+            const statusDiv = document.getElementById('status');
+            const responseDiv = document.getElementById('response');
+            
+            statusDiv.className = 'status loading';
+            statusDiv.textContent = '⏳ Testing backend at http://localhost:3001/api/current-data...';
+            
+            try {
+                console.log('Fetching from backend...');
+                const response = await fetch('http://localhost:3001/api/current-data');
+                console.log('Response status:', response.status);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Data received:', data);
+                    
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = `✅ Backend is working! Received data from ${data.buildings.length} buildings. Total Power: ${data.totalPower.toFixed(0)} kW`;
+                    
+                    responseDiv.textContent = JSON.stringify(data, null, 2).substring(0, 2000) + '\n\n... (showing first 2000 chars)';
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Backend connection failed: ' + error.message;
+                responseDiv.textContent = 'Error Details:\n' + error.stack;
+            }
+        }
+        
+        function openDashboard() {
+            window.open('http://localhost:3000', '_blank');
+        }
+        
+        // Auto-test on load
+        window.onload = function() {
+            console.log('Page loaded, testing backend...');
+            testBackend();
+        };
+    </script>
+</body>
+</html>

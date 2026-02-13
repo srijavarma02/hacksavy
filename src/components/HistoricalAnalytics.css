@@ -1,0 +1,242 @@
+.historical-analytics {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(136, 146, 176, 0.1);
+  margin-bottom: 20px;
+}
+
+.analytics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.analytics-header h2 {
+  color: #ccd6f6;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.view-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.view-controls button {
+  background: rgba(136, 146, 176, 0.1);
+  border: 1px solid rgba(136, 146, 176, 0.2);
+  color: #8892b0;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.view-controls button:hover {
+  background: rgba(0, 212, 255, 0.1);
+  border-color: #00d4ff;
+  color: #00d4ff;
+}
+
+.view-controls button.active {
+  background: rgba(0, 212, 255, 0.2);
+  border-color: #00d4ff;
+  color: #00d4ff;
+}
+
+.chart-section {
+  margin-bottom: 30px;
+}
+
+.chart-section h3 {
+  color: #ccd6f6;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.custom-tooltip {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  padding: 12px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.custom-tooltip .label {
+  color: #ccd6f6;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.custom-tooltip p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+}
+
+.heatmap-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.heatmap-row {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.day-label {
+  width: 60px;
+  color: #8892b0;
+  font-size: 0.85rem;
+}
+
+.heatmap-cell {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.2);
+  z-index: 10;
+}
+
+.wastage-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.wastage-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wastage-stat .stat-label {
+  color: #8892b0;
+  font-size: 0.85rem;
+}
+
+.wastage-stat .stat-value {
+  color: #ccd6f6;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.wastage-stat .stat-value.critical {
+  color: #ff6b6b;
+}
+
+.wastage-stat .stat-value.warning {
+  color: #ffa500;
+}
+
+.analytics-insights {
+  margin-top: 30px;
+}
+
+.analytics-insights h3 {
+  color: #ccd6f6;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.insight-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 3px solid;
+}
+
+.insight-card.info {
+  background: rgba(0, 153, 255, 0.1);
+  border-color: #0099ff;
+}
+
+.insight-card.warning {
+  background: rgba(255, 165, 0, 0.1);
+  border-color: #ffa500;
+}
+
+.insight-card.critical {
+  background: rgba(255, 107, 107, 0.1);
+  border-color: #ff6b6b;
+}
+
+.insight-card.success {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: #00ff88;
+}
+
+.insight-icon {
+  font-size: 1.5rem;
+}
+
+.insight-card p {
+  color: #ccd6f6;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.loading {
+  color: #8892b0;
+  text-align: center;
+  padding: 40px;
+}
+
+.error-message {
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid #ff6b6b;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  color: #ccd6f6;
+}
+
+.error-message h3 {
+  color: #ff6b6b;
+  margin-bottom: 10px;
+}
+
+.error-message p {
+  color: #8892b0;
+  margin: 8px 0;
+}
+
+.error-message button {
+  margin-top: 15px;
+  background: rgba(0, 212, 255, 0.2);
+  border: 1px solid #00d4ff;
+  color: #00d4ff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.error-message button:hover {
+  background: rgba(0, 212, 255, 0.3);
+}
