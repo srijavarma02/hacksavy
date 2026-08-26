@@ -9,6 +9,7 @@ import { format, subHours, subDays } from 'date-fns';
 import mlService from './mlService.js';
 import notificationService from './notificationService.js';
 import advancedMonitoringService from './advancedMonitoringService.js';
+import aiService from './aiService.js';
 
 const app = express();
 app.use(cors());
@@ -228,8 +229,8 @@ function generateMockData() {
 
 // API Endpoints
 
-// Get historical analytics
-app.get('/api/analytics/:buildingId', (req, res) => {
+// Get historical analytics (AI-powered insights via featherless.ai)
+app.get('/api/analytics/:buildingId', async (req, res) => {
   const { buildingId } = req.params;
   const { range } = req.query;
   
@@ -241,14 +242,20 @@ app.get('/api/analytics/:buildingId', (req, res) => {
   const totalBaseline = trendData.reduce((sum, d) => sum + d.baseline, 0);
   const totalWastage = totalConsumption - totalBaseline;
   const wastagePercent = (totalWastage / totalBaseline) * 100;
-  
-  const insights = mlService.generateInsights({
+
+  const building = buildings.find(b => b.id === parseInt(buildingId));
+  const analyticsContext = {
     wastagePercent,
     powerChange: (Math.random() - 0.5) * 10,
     peakLoad: 200,
     baseline: 150,
-    renewablePercent: 35
-  });
+    renewablePercent: 35,
+    buildingName: building?.name || 'Campus',
+    trendData,
+  };
+
+  // Use featherless.ai for insights (falls back to rule-based if unavailable)
+  const insights = await aiService.generateAIInsights(analyticsContext);
   
   res.json({
     trendData,
@@ -257,7 +264,8 @@ app.get('/api/analytics/:buildingId', (req, res) => {
     totalWastage,
     wastagePercent,
     costImpact: totalWastage * 8, // ₹8 per kWh
-    insights
+    insights,
+    aiPowered: !!process.env.FEATHERLESS_API_KEY,
   });
 });
 
@@ -392,6 +400,59 @@ app.get('/api/sms/status', (req, res) => {
     status: paused ? 'paused' : 'active',
     message: paused ? 'SMS notifications are currently paused' : 'SMS notifications are active'
   });
+});
+
+// AI Chat endpoint — natural language Q&A about campus energy data
+app.post('/api/ai/chat', async (req, res) => {
+  const { message, conversationHistory } = req.body;
+
+  if (!message || typeof message !== 'string' || message.trim().length === 0) {
+    return res.status(400).json({ error: 'Message is required.' });
+  }
+
+  if (!process.env.FEATHERLESS_API_KEY) {
+    return res.status(503).json({
+      error: 'AI service unavailable. Please set FEATHERLESS_API_KEY in your .env file.',
+      aiUnavailable: true,
+    });
+  }
+
+  // Build a live campus snapshot to give the AI current context
+  const liveData = generateMockData();
+  const campusContext = {
+    totalPower: liveData.totalPower?.toFixed(1),
+    powerChange: liveData.powerChange?.toFixed(1),
+    energyToday: liveData.energyToday?.toFixed(1),
+    waterUsage: liveData.waterUsage?.toFixed(1),
+    gasFlow: liveData.gasFlow?.toFixed(2),
+    totalWastage: liveData.totalWastage?.toFixed(1),
+    buildings: liveData.buildings.map(b => ({
+      name: b.name,
+      power: b.power?.toFixed(1),
+      status: b.status,
+      wastagePercent: b.wastagePercent?.toFixed(1),
+      occupancy: b.occupancy,
+      temperature: b.temperature?.toFixed(1),
+      hvacFault: b.hvacFault?.detected ? b.hvacFault.message : null,
+    })),
+    activeAlerts: alertsDatabase.slice(0, 5).map(a => ({
+      severity: a.severity,
+      title: a.title,
+      location: a.location,
+    })),
+  };
+
+  try {
+    const reply = await aiService.answerEnergyQuestion(
+      message.trim(),
+      campusContext,
+      Array.isArray(conversationHistory) ? conversationHistory : []
+    );
+    res.json({ reply, model: process.env.FEATHERLESS_MODEL || 'meta-llama/Meta-Llama-3.1-8B-Instruct' });
+  } catch (err) {
+    console.error('[/api/ai/chat] Error:', err.message);
+    res.status(500).json({ error: 'AI service error: ' + err.message });
+  }
 });
 
 // WebSocket connection

@@ -9,6 +9,8 @@ import HistoricalAnalytics from './components/HistoricalAnalytics';
 import SustainabilityMetrics from './components/SustainabilityMetrics';
 import ThresholdControls from './components/ThresholdControls';
 import ErrorBoundary from './components/ErrorBoundary';
+import AIChat from './components/AIChat';
+import ReportGenerator from './components/ReportGenerator';
 import './App.css';
 
 function App() {
@@ -79,6 +81,9 @@ function App() {
 
         {viewMode === 'analytics' && (
           <div className="full-width-panel">
+            <ErrorBoundary componentName="AIChat">
+              <AIChat />
+            </ErrorBoundary>
             <ErrorBoundary componentName="ThresholdControls">
               <ThresholdControls />
             </ErrorBoundary>
@@ -101,6 +106,14 @@ function App() {
               building={selectedBuilding}
               timeRange={timeFilter}
             />
+          </div>
+        )}
+
+        {viewMode === 'reports' && (
+          <div className="full-width-panel">
+            <ErrorBoundary componentName="ReportGenerator">
+              <ReportGenerator />
+            </ErrorBoundary>
           </div>
         )}
       </div>
