@@ -39,6 +39,12 @@ function Header({ timeFilter, setTimeFilter, viewMode, setViewMode }) {
           >
             🌱 Sustainability
           </button>
+          <button
+            className={viewMode === 'reports' ? 'active' : ''}
+            onClick={() => setViewMode('reports')}
+          >
+            📄 Reports
+          </button>
         </div>
         
         <div className="time-filters">
