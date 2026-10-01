@@ -21,8 +21,9 @@ endpoint returns 404.
 
 ## Connect the Vercel frontend
 
-In the Vercel project settings, add these environment variables for Production,
-substituting the actual service hostname shown by Render:
+The frontend defaults to the current Render service URL in production. If you
+need to override it, add these environment variables to the Vercel project for
+Production:
 
 ```text
 VITE_API_URL=https://YOUR-SERVICE.onrender.com
