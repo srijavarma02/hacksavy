@@ -92,7 +92,8 @@ class NotificationService {
     const manager = this.blockManagers[buildingId];
     if (!manager) return null;
     if (!manager.phone) {
-      throw new Error(`BLOCK_MANAGER_${buildingId}_PHONE is not configured`);
+      console.warn(`SMS notification skipped: BLOCK_MANAGER_${buildingId}_PHONE is not configured`);
+      return null;
     }
 
     // Check rate limit
@@ -175,7 +176,8 @@ class NotificationService {
     const manager = this.blockManagers[buildingId];
     if (!manager) return null;
     if (!manager.phone) {
-      throw new Error(`BLOCK_MANAGER_${buildingId}_PHONE is not configured`);
+      console.warn(`WhatsApp notification skipped: BLOCK_MANAGER_${buildingId}_PHONE is not configured`);
+      return null;
     }
 
     // Check rate limit
@@ -267,7 +269,8 @@ class NotificationService {
     const manager = this.blockManagers[buildingId];
     if (!manager) return null;
     if (!manager.phone) {
-      throw new Error(`BLOCK_MANAGER_${buildingId}_PHONE is not configured`);
+      console.warn(`HVAC notification skipped: BLOCK_MANAGER_${buildingId}_PHONE is not configured`);
+      return null;
     }
 
     // Check rate limit
