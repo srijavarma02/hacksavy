@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useEnergyData } from './useEnergyData';
 import Header from './components/Header';
 import MetricsGrid from './components/MetricsGrid';
 import CampusMap from './components/CampusMap';
@@ -9,37 +10,13 @@ import SustainabilityMetrics from './components/SustainabilityMetrics';
 import ThresholdControls from './components/ThresholdControls';
 import ErrorBoundary from './components/ErrorBoundary';
 import ReportViewer from './components/Reports/ReportViewer';
-import { API_URL } from './config';
 import './App.css';
 
 function App() {
-  const [energyData, setEnergyData] = useState(null);
+  const energyData = useEnergyData();
   const [selectedBuilding, setSelectedBuilding] = useState(null);
   const [timeFilter, setTimeFilter] = useState('24h');
   const [viewMode, setViewMode] = useState('overview');
-
-  // Use HTTP polling instead of WebSocket (more reliable)
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${API_URL}/api/current-data`);
-        if (response.ok) {
-          const data = await response.json();
-          setEnergyData(data);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    // Fetch immediately
-    fetchData();
-    
-    // Then fetch every 5 seconds
-    const interval = setInterval(fetchData, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="app">
