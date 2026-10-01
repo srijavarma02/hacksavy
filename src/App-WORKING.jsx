@@ -9,6 +9,7 @@ import SustainabilityMetrics from './components/SustainabilityMetrics';
 import ThresholdControls from './components/ThresholdControls';
 import ErrorBoundary from './components/ErrorBoundary';
 import ReportViewer from './components/Reports/ReportViewer';
+import { API_URL } from './config';
 import './App.css';
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/current-data');
+        const response = await fetch(`${API_URL}/api/current-data`);
         if (response.ok) {
           const data = await response.json();
           setEnergyData(data);

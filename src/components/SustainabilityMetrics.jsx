@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 import './SustainabilityMetrics.css';
 
 function SustainabilityMetrics() {
@@ -12,7 +13,7 @@ function SustainabilityMetrics() {
 
   const fetchMetrics = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/sustainability');
+      const response = await fetch(`${API_URL}/api/sustainability`);
       const data = await response.json();
       setMetrics(data);
     } catch (error) {

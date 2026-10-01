@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../../config';
 import './ReportSettings.css';
 
 function ReportSettings({ onClose }) {
@@ -32,7 +33,7 @@ function ReportSettings({ onClose }) {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('http://localhost:3001/api/reports/config');
+      const response = await fetch(`${API_URL}/api/reports/config`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -189,7 +190,7 @@ function ReportSettings({ onClose }) {
         }
       };
 
-      const response = await fetch('http://localhost:3001/api/reports/config', {
+      const response = await fetch(`${API_URL}/api/reports/config`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 import './SmartAlerts.css';
 
 function SmartAlerts() {
@@ -21,7 +22,7 @@ function SmartAlerts() {
 
   const fetchAlerts = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/alerts');
+      const response = await fetch(`${API_URL}/api/alerts`);
       const data = await response.json();
       setAlerts(data);
     } catch (error) {
@@ -31,7 +32,7 @@ function SmartAlerts() {
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/notifications');
+      const response = await fetch(`${API_URL}/api/notifications`);
       const data = await response.json();
       setNotifications(data);
     } catch (error) {
@@ -42,7 +43,7 @@ function SmartAlerts() {
   const sendTestSMS = async () => {
     setSendingTest(true);
     try {
-      const response = await fetch('http://localhost:3001/api/test-notification', {
+      const response = await fetch(`${API_URL}/api/test-notification`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +70,7 @@ function SmartAlerts() {
 
   const acknowledgeAlert = async (alertId) => {
     try {
-      await fetch(`http://localhost:3001/api/alerts/${alertId}/acknowledge`, {
+      await fetch(`${API_URL}/api/alerts/${alertId}/acknowledge`, {
         method: 'POST'
       });
       fetchAlerts();

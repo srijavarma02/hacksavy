@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../../config';
 import './ReportList.css';
 
 function ReportList({ onSelectReport, refreshTrigger }) {
@@ -22,7 +23,7 @@ function ReportList({ onSelectReport, refreshTrigger }) {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('http://localhost:3001/api/reports');
+      const response = await fetch(`${API_URL}/api/reports`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -83,7 +84,7 @@ function ReportList({ onSelectReport, refreshTrigger }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/api/reports/${reportId}`, {
+      const response = await fetch(`${API_URL}/api/reports/${reportId}`, {
         method: 'DELETE'
       });
 

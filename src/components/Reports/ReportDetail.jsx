@@ -5,6 +5,7 @@ import AlertSection from './AlertSection';
 import TrendCharts from './TrendCharts';
 import RecommendationList from './RecommendationList';
 import ExportControls from './ExportControls';
+import { API_URL } from '../../config';
 import './ReportDetail.css';
 
 function ReportDetail({ reportId, onBack }) {
@@ -17,7 +18,7 @@ function ReportDetail({ reportId, onBack }) {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch(`http://localhost:3001/api/reports/${reportId}`);
+        const response = await fetch(`${API_URL}/api/reports/${reportId}`);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

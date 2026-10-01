@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 import './MLModelStatus.css';
 
 function MLModelStatus() {
@@ -17,17 +18,17 @@ function MLModelStatus() {
   const fetchMLData = async () => {
     try {
       // Fetch model status
-      const statusRes = await fetch('http://localhost:3001/api/ml/status');
+      const statusRes = await fetch(`${API_URL}/api/ml/status`);
       const statusData = await statusRes.json();
       setModelStatus(statusData);
 
       // Fetch predictions
-      const predRes = await fetch(`http://localhost:3001/api/ml/predict/${selectedBuilding}`);
+      const predRes = await fetch(`${API_URL}/api/ml/predict/${selectedBuilding}`);
       const predData = await predRes.json();
       setPredictions(predData);
 
       // Fetch anomalies
-      const anomRes = await fetch('http://localhost:3001/api/ml/anomalies');
+      const anomRes = await fetch(`${API_URL}/api/ml/anomalies`);
       const anomData = await anomRes.json();
       setAnomalies(anomData.anomalies);
 

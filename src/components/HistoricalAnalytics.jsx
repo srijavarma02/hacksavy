@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart, ReferenceLine } from 'recharts';
 import { format, subDays, subHours } from 'date-fns';
+import { API_URL } from '../config';
 import './HistoricalAnalytics.css';
 
 function HistoricalAnalytics({ building, timeRange = '24h' }) {
@@ -17,7 +18,7 @@ function HistoricalAnalytics({ building, timeRange = '24h' }) {
   const fetchAnalyticsData = async () => {
     try {
       setError(null);
-      const response = await fetch(`http://localhost:3001/api/analytics/${building?.id || 'campus'}?range=${timeRange}`);
+      const response = await fetch(`${API_URL}/api/analytics/${building?.id || 'campus'}?range=${timeRange}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -32,7 +33,7 @@ function HistoricalAnalytics({ building, timeRange = '24h' }) {
 
   const fetchMonitoringConfig = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/monitoring/config');
+      const response = await fetch(`${API_URL}/api/monitoring/config`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

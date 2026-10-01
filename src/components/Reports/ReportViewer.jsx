@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReportList from './ReportList';
 import ReportDetail from './ReportDetail';
+import { API_URL } from '../../config';
 import './ReportViewer.css';
 
 function ReportViewer() {
@@ -23,7 +24,7 @@ function ReportViewer() {
       setGenerating(true);
       setGenerationError(null);
       
-      const response = await fetch('http://localhost:3001/api/reports/generate', {
+      const response = await fetch(`${API_URL}/api/reports/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

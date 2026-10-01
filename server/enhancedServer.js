@@ -5,14 +5,32 @@ import express from 'express';
 import { WebSocketServer } from 'ws';
 import { createServer } from 'http';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import { format, subHours, subDays } from 'date-fns';
 import mlService from './mlService.js';
 import notificationService from './notificationService.js';
 import advancedMonitoringService from './advancedMonitoringService.js';
 
 const app = express();
-app.use(cors());
+app.set('trust proxy', 1);
+
+const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:3000,http://localhost:5173')
+  .split(',')
+  .map(origin => origin.trim());
+
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
+app.use('/api/', rateLimit({ windowMs: 60_000, max: 120 }));
+app.use('/api/test-notification', (req, res, next) => {
+  if (process.env.ENABLE_DEMO_ENDPOINTS !== 'true') return res.status(404).end();
+  next();
+});
+
+if (process.env.NODE_ENV === 'production' && process.env.ENABLE_SMS !== 'true') {
+  notificationService.pauseSMS();
+}
+
+app.get('/health', (req, res) => res.json({ ok: true }));
 
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
@@ -473,6 +491,39 @@ app.get('/api/reports', async (req, res) => {
   }
 });
 
+// Get report configuration
+app.get('/api/reports/config', async (req, res) => {
+  try {
+    const config = await reportService.getConfig();
+    res.json({ success: true, config });
+  } catch (error) {
+    console.error('Error getting configuration:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Update report configuration
+app.put('/api/reports/config', async (req, res) => {
+  try {
+    const config = req.body;
+    const updatedConfig = await reportService.updateConfig(config);
+    res.json({
+      success: true,
+      message: 'Configuration updated successfully',
+      config: updatedConfig
+    });
+  } catch (error) {
+    console.error('Error updating configuration:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 // Get specific report
 app.get('/api/reports/:id', async (req, res) => {
   try {
@@ -597,40 +648,6 @@ app.post('/api/reports/:id/distribute', async (req, res) => {
   }
 });
 
-// Get report configuration
-app.get('/api/reports/config', async (req, res) => {
-  try {
-    const config = await reportService.getConfig();
-    res.json({ success: true, config });
-  } catch (error) {
-    console.error('Error getting configuration:', error);
-    res.status(500).json({ 
-      success: false, 
-      error: error.message 
-    });
-  }
-});
-
-// Update report configuration
-app.put('/api/reports/config', async (req, res) => {
-  try {
-    const config = req.body;
-    const updatedConfig = await reportService.updateConfig(config);
-    
-    res.json({ 
-      success: true, 
-      message: 'Configuration updated successfully',
-      config: updatedConfig
-    });
-  } catch (error) {
-    console.error('Error updating configuration:', error);
-    res.status(500).json({ 
-      success: false, 
-      error: error.message 
-    });
-  }
-});
-
 // Get next scheduled report run time
 app.get('/api/reports/schedule/next', (req, res) => {
   try {
@@ -713,40 +730,43 @@ app.get('/api/ml/anomalies', (req, res) => {
   });
 });
 
-// WebSocket connection
+// One global collector (instead of one per browser tab)
+setInterval(() => generateMockData(), 3000);
+
 wss.on('connection', (ws) => {
   console.log('Client connected');
-  
-  // Collect data every 3 seconds for surge detection
-  const dataCollectionInterval = setInterval(() => {
-    generateMockData(); // This records power readings for surge detection
-  }, 3000);
-  
-  // Send updates to client every 1 minute
-  const clientUpdateInterval = setInterval(() => {
-    const data = generateMockData();
-    ws.send(JSON.stringify(data));
-  }, 60000);
-  
-  // Send initial data immediately
-  const initialData = generateMockData();
-  ws.send(JSON.stringify(initialData));
+  ws.isAlive = true;
+  ws.on('pong', () => { ws.isAlive = true; });
+
+  const send = () => {
+    if (ws.readyState === ws.OPEN) ws.send(JSON.stringify(generateMockData()));
+  };
+  send();
+  const clientUpdateInterval = setInterval(send, 60000);
 
   ws.on('close', () => {
     console.log('Client disconnected');
-    clearInterval(dataCollectionInterval);
     clearInterval(clientUpdateInterval);
   });
+  ws.on('error', (e) => console.error('WS error:', e.message));
 });
+
+// Heartbeat: keeps connections alive through proxies, drops dead ones
+const heartbeat = setInterval(() => {
+  wss.clients.forEach((ws) => {
+    if (!ws.isAlive) return ws.terminate();
+    ws.isAlive = false;
+    ws.ping();
+  });
+}, 30000);
+wss.on('close', () => clearInterval(heartbeat));
 
 // Cleanup old notifications every 5 minutes
 setInterval(() => {
   notificationService.cleanupLog();
 }, 5 * 60 * 1000);
 
-const PORT = 3001;
-server.listen(PORT, () => {
-  console.log(`🚀 Enhanced Smart Campus Server running on port ${PORT}`);
-  console.log(`📊 WebSocket: ws://localhost:${PORT}`);
-  console.log(`🔌 REST API: http://localhost:${PORT}/api`);
+const PORT = process.env.PORT || 3001;
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });

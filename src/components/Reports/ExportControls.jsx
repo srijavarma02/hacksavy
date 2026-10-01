@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_URL } from '../../config';
 import './ExportControls.css';
 
 function ExportControls({ reportId }) {
@@ -16,7 +17,7 @@ function ExportControls({ reportId }) {
       setExportingPDF(true);
       setError(null);
 
-      const response = await fetch(`http://localhost:3001/api/reports/${reportId}/export/pdf`);
+      const response = await fetch(`${API_URL}/api/reports/${reportId}/export/pdf`);
       
       if (!response.ok) {
         throw new Error(`Export failed: ${response.statusText}`);
@@ -54,7 +55,7 @@ function ExportControls({ reportId }) {
       setExportingCSV(true);
       setError(null);
 
-      const response = await fetch(`http://localhost:3001/api/reports/${reportId}/export/csv`);
+      const response = await fetch(`${API_URL}/api/reports/${reportId}/export/csv`);
       
       if (!response.ok) {
         throw new Error(`Export failed: ${response.statusText}`);

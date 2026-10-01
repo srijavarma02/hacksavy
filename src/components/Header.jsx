@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_URL } from '../config';
 import './Header.css';
 
 function Header({ timeFilter, setTimeFilter, viewMode, setViewMode }) {
@@ -10,7 +11,7 @@ function Header({ timeFilter, setTimeFilter, viewMode, setViewMode }) {
     setReportMessage('');
     
     try {
-      const response = await fetch('http://localhost:3001/api/reports/generate', {
+      const response = await fetch(`${API_URL}/api/reports/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -20,8 +21,8 @@ function Header({ timeFilter, setTimeFilter, viewMode, setViewMode }) {
       const data = await response.json();
       
       if (data.success) {
-        const pdfUrl = `http://localhost:3001/api/reports/${data.reportId}/export/pdf`;
-        const csvUrl = `http://localhost:3001/api/reports/${data.reportId}/export/csv`;
+        const pdfUrl = `${API_URL}/api/reports/${data.reportId}/export/pdf`;
+        const csvUrl = `${API_URL}/api/reports/${data.reportId}/export/csv`;
         setReportMessage(
           <span>
             ✓ Report generated! Download: 

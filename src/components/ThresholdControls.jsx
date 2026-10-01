@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 import './ThresholdControls.css';
 
 function ThresholdControls() {
@@ -18,7 +19,7 @@ function ThresholdControls() {
 
   const fetchConfig = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/monitoring/config');
+      const response = await fetch(`${API_URL}/api/monitoring/config`);
       const data = await response.json();
       setConfig(data);
       
@@ -36,7 +37,7 @@ function ThresholdControls() {
 
   const updateThresholds = async (period, warning, critical) => {
     try {
-      await fetch('http://localhost:3001/api/monitoring/thresholds', {
+      await fetch(`${API_URL}/api/monitoring/thresholds`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ period, warning, critical })
@@ -49,7 +50,7 @@ function ThresholdControls() {
 
   const updateAdaptiveMode = async (enabled, multiplier) => {
     try {
-      await fetch('http://localhost:3001/api/monitoring/adaptive', {
+      await fetch(`${API_URL}/api/monitoring/adaptive`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ enabled, multiplier })
