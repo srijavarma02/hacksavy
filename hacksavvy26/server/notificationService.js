@@ -25,15 +25,14 @@ class NotificationService {
     // SMS pause/resume control
     this.smsPaused = true; // Start paused by default
     
-    // IMPORTANT: Replace with your real phone numbers for demo
     this.blockManagers = {
-      1: { name: 'Your Name', phone: '+918008584156', email: 'you@campus.edu' },
-      2: { name: 'Building Manager 2', phone: '+918008584156', email: 'manager2@campus.edu' },
-      3: { name: 'Building Manager 3', phone: '+918008584156', email: 'manager3@campus.edu' },
-      4: { name: 'Building Manager 4', phone: '+918008584156', email: 'manager4@campus.edu' },
-      5: { name: 'Building Manager 5', phone: '+918008584156', email: 'manager5@campus.edu' },
-      6: { name: 'Building Manager 6', phone: '+918008584156', email: 'manager6@campus.edu' },
-      7: { name: 'Building Manager 7', phone: '+918008584156', email: 'manager7@campus.edu' }
+      1: { name: 'Building Manager 1', phone: process.env.BLOCK_MANAGER_1_PHONE, email: 'manager1@campus.edu' },
+      2: { name: 'Building Manager 2', phone: process.env.BLOCK_MANAGER_2_PHONE, email: 'manager2@campus.edu' },
+      3: { name: 'Building Manager 3', phone: process.env.BLOCK_MANAGER_3_PHONE, email: 'manager3@campus.edu' },
+      4: { name: 'Building Manager 4', phone: process.env.BLOCK_MANAGER_4_PHONE, email: 'manager4@campus.edu' },
+      5: { name: 'Building Manager 5', phone: process.env.BLOCK_MANAGER_5_PHONE, email: 'manager5@campus.edu' },
+      6: { name: 'Building Manager 6', phone: process.env.BLOCK_MANAGER_6_PHONE, email: 'manager6@campus.edu' },
+      7: { name: 'Building Manager 7', phone: process.env.BLOCK_MANAGER_7_PHONE, email: 'manager7@campus.edu' }
     };
     
     // Wastage thresholds per block (percentage over baseline)
@@ -92,6 +91,9 @@ class NotificationService {
     
     const manager = this.blockManagers[buildingId];
     if (!manager) return null;
+    if (!manager.phone) {
+      throw new Error(`BLOCK_MANAGER_${buildingId}_PHONE is not configured`);
+    }
 
     // Check rate limit
     if (!this.canSendNotification(buildingId)) {
@@ -172,6 +174,9 @@ class NotificationService {
   async sendWhatsApp(buildingId, wastageData) {
     const manager = this.blockManagers[buildingId];
     if (!manager) return null;
+    if (!manager.phone) {
+      throw new Error(`BLOCK_MANAGER_${buildingId}_PHONE is not configured`);
+    }
 
     // Check rate limit
     if (!this.canSendNotification(buildingId)) {
@@ -261,6 +266,9 @@ class NotificationService {
   async sendHVACAlert(buildingId, faultData) {
     const manager = this.blockManagers[buildingId];
     if (!manager) return null;
+    if (!manager.phone) {
+      throw new Error(`BLOCK_MANAGER_${buildingId}_PHONE is not configured`);
+    }
 
     // Check rate limit
     if (!this.canSendNotification(buildingId)) {
