@@ -58,7 +58,7 @@ describe('Configuration Manager', () => {
 
     describe('isValidPhone', () => {
       test('should validate correct phone formats (E.164)', () => {
-        expect(isValidPhone('+918008584156')).toBe(true);
+        expect(isValidPhone('+14155550123')).toBe(true);
         expect(isValidPhone('+12025551234')).toBe(true);
         expect(isValidPhone('+447911123456')).toBe(true);
       });
@@ -108,7 +108,7 @@ describe('Configuration Manager', () => {
         ...DEFAULT_CONFIG,
         distribution: {
           ...DEFAULT_CONFIG.distribution,
-          smsRecipients: ['+918008584156', '1234567890']
+          smsRecipients: ['+14155550123', '1234567890']
         }
       };
       const result = validateConfig(config);

@@ -123,7 +123,7 @@ function ReportSettings({ onClose }) {
     if (!newPhone.trim()) return;
     
     if (!validatePhone(newPhone)) {
-      setValidationErrors({ ...validationErrors, newPhone: 'Invalid phone format. Use E.164 format (e.g., +918008584156)' });
+      setValidationErrors({ ...validationErrors, newPhone: 'Invalid phone format. Use E.164 format (e.g., +14155550123)' });
       return;
     }
 
@@ -420,7 +420,7 @@ function ReportSettings({ onClose }) {
                     value={newPhone}
                     onChange={(e) => setNewPhone(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleAddPhone()}
-                    placeholder="+918008584156"
+                    placeholder="+14155550123"
                     className={validationErrors.newPhone ? 'error' : ''}
                   />
                   <button onClick={handleAddPhone}>Add</button>
@@ -428,7 +428,7 @@ function ReportSettings({ onClose }) {
                 {validationErrors.newPhone && (
                   <span className="error-text">{validationErrors.newPhone}</span>
                 )}
-                <span className="help-text">Use E.164 format (e.g., +918008584156)</span>
+                <span className="help-text">Use E.164 format (e.g., +14155550123)</span>
               </div>
 
               {smsRecipients.length > 0 && (

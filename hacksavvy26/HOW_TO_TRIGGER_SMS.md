@@ -74,7 +74,7 @@ These happen randomly as the mock data generates anomalies.
 
 ### SMS not received?
 - Check Twilio Console logs: https://console.twilio.com → Monitor → Logs
-- Verify phone number is correct: +918008584156
+- Verify the `BLOCK_MANAGER_*_PHONE` recipient is correct
 - Check phone's spam folder
 - Ensure phone can receive international SMS
 
@@ -98,8 +98,8 @@ These happen randomly as the mock data generates anomalies.
 
 ## Your Setup
 
-✅ Phone: +918008584156  
-✅ Twilio Number: +19154652632  
+✅ Recipient phone: configured with `BLOCK_MANAGER_*_PHONE`
+✅ Twilio number: configured with `TWILIO_PHONE_NUMBER`
 ✅ Server: http://localhost:8080  
 ✅ Dashboard: http://localhost:5173  
 

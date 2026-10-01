@@ -30,7 +30,7 @@ async function simpleTest() {
     console.log('     • isValidEmail("invalid"):', isValidEmail('invalid'));
     console.log('     • isValidTime("18:00"):', isValidTime('18:00'));
     console.log('     • isValidTime("25:00"):', isValidTime('25:00'));
-    console.log('     • isValidPhone("+918008584156"):', isValidPhone('+918008584156'));
+    console.log('     • isValidPhone("+14155550123"):', isValidPhone('+14155550123'));
     console.log('     • isValidPhone("1234567890"):', isValidPhone('1234567890'));
     
     // Load configuration
