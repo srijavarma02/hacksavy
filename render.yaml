@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: ecopulsehacksavy-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_URL
+        value: https://ecopulsehacksavy.vercel.app
+      - key: ENABLE_SMS
+        value: "false"
+      - key: ENABLE_DEMO_ENDPOINTS
+        value: "false"
+      - key: PUPPETEER_SKIP_DOWNLOAD
+        value: "true"
