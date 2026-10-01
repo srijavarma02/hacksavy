@@ -244,15 +244,6 @@ predict(point, threshold = 0.6) {  // Lower = more sensitive (0.5-0.8)
 - **[ML Features Summary](ML_FEATURES_SUMMARY.md)**: ML capabilities overview (NEW!)
 - **[ML Models Guide](ML_MODELS_GUIDE.md)**: Comprehensive ML documentation (NEW!)
 
-## 🎬 Demo Video
-
-Follow the [Demo Script](DEMO_SCRIPT.md) to create a professional walkthrough showcasing:
-- Real-time monitoring
-- AI anomaly detection
-- Automated notifications
-- Historical analytics
-- Sustainability tracking
-
 ## 🔐 Production Deployment
 
 ### Environment Variables
