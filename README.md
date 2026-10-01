@@ -1,307 +1,159 @@
-# ⚡ Smart Campus Energy Dashboard - Phase 1 Expansion
+# Smart Campus Energy Dashboard
 
-Real-time energy monitoring system with AI-powered anomaly detection, automated SMS/WhatsApp notifications, historical analytics, and comprehensive sustainability tracking.
+A React dashboard and Node.js API for exploring campus energy metrics, alerts,
+analytics, and reports. The current app is a **demo**: the backend generates
+simulated readings for seven example buildings; it is not connected to physical
+meters or a building-management system.
 
-## 🌟 Key Features
+## Live demo
 
-### 🤖 Machine Learning Models (NEW!)
-- **Isolation Forest**: Advanced anomaly detection with 100 trees
-- **Random Forest**: Power consumption prediction (next hour + 24h forecast)
-- **Automatic Training**: Continuous learning from live data
-- **Real-time Inference**: < 10ms anomaly detection, < 20ms predictions
-- **Visual Dashboard**: ML model status, predictions, and anomaly cards
-- **85% Accuracy**: High confidence predictions after initial training
+- **Dashboard:** <https://ecopulsehacksavy.vercel.app/>
+- **Backend health:** <https://ecopulsehacksavy-api.onrender.com/health>
+- **Backend ML status:** <https://ecopulsehacksavy-api.onrender.com/api/ml/status>
 
-### Real-Time Monitoring
-- Live energy consumption tracking across 7 campus buildings
-- WebSocket-based updates every 3 seconds
-- Interactive campus map with building status visualization
-- Per-building zone-level consumption breakdown
-- Water, gas, and power metrics
+The frontend is hosted on Vercel and the API/WebSocket server is hosted on
+Render. Render's free instance can sleep when idle, so the first request after
+inactivity may take a while. The dashboard reconnects its WebSocket and uses
+HTTP polling as a fallback.
 
-### AI-Powered Smart Alerts
-- **Isolation Forest Detection**: Advanced ML-based anomaly detection
-- **Random Forest Predictions**: Forecast-based proactive alerts
-- **HVAC Fault Detection**: Automatic identification of equipment malfunctions
-- **Pattern Recognition**: Identifies unusual consumption patterns
-- **Multi-level Severity**: Critical, Warning, Info classifications
-- **Anomaly Scoring**: Confidence scores (0-1) for each detection
+## Features
 
-### Automated Notifications
-- **SMS/WhatsApp Integration**: Instant alerts via Twilio
-- **Threshold-Based Triggers**: >20% wastage triggers automatic notifications
-- **Per-Block Managers**: Each building has assigned contact
-- **Notification Log**: Complete audit trail of all messages
-- **Rate Limiting**: Smart throttling to prevent notification spam
+- Dashboard for seven simulated campus buildings with power, occupancy,
+  temperature, and zone readings.
+- Simulated readings are generated every three seconds and streamed initially
+  and then every 60 seconds over WebSocket, with HTTP polling as a fallback
+  while the socket is unavailable.
+- Alert acknowledgement, notification log, and configurable monitoring
+  thresholds.
+- Historical analytics, trends, heatmap, sustainability metrics, and
+  recommendations.
+- Report generation, report settings, CSV export, and optional PDF export.
+- ML status, anomaly detection, and power-consumption predictions. Models train
+  from generated readings in memory; training restarts from scratch when the
+  backend process restarts.
+- Optional Twilio SMS/WhatsApp and SMTP report distribution. These require
+  explicit server configuration and are disabled or unavailable by default.
 
-### Historical Analytics
-- **Trend Charts**: Daily/weekly/seasonal consumption patterns
-- **Consumption Heatmaps**: 24x7 hourly visualization
-- **Baseline Comparisons**: Actual vs expected usage analysis
-- **Wastage Tracking**: Real-time wastage % and cost impact
-- **AI Insights**: ML-generated recommendations
+## Tech stack
 
-### Sustainability Metrics
-- **CO₂ Emissions**: Real-time carbon footprint tracking
-- **Energy Intensity**: kWh/m² monitoring
-- **Renewable Energy**: Solar/wind contribution tracking (%)
-- **Net-Zero Progress**: 2030 target visualization
-- **Emission Breakdown**: Scope 1, 2, 3 analysis
-- **Cost Savings**: Daily savings vs baseline
+- **Frontend:** React 18, Vite, Recharts
+- **Backend:** Node.js (18+), Express, `ws`
+- **Other:** `ml-random-forest`, Twilio, Puppeteer, Jest
 
-## 🚀 Quick Start
+## Run locally
 
-### Installation
+Requirements: Node.js 18 or newer and npm.
+
 ```bash
-cd hacksavvy26
 npm install
-```
-
-### Run Development Server
-```bash
 npm run dev
 ```
 
-Access the dashboard at: **http://localhost:5173**
+The Vite frontend runs at <http://localhost:3000>; the API and WebSocket server
+run at <http://localhost:3001>. `npm run dev` starts both.
 
-### ML Models Setup (NEW!)
+To run either process separately:
 
-The dashboard now includes advanced ML models that train automatically:
+```bash
+npm run client
+npm run server
+```
 
-1. **Start the server**: `npm run dev`
-2. **Wait 10 minutes**: Models need 200+ data points to train
-3. **View ML Status**: Go to Analytics tab → ML Model Status card
-4. **Check predictions**: Select buildings to see forecasts
+To build the production frontend:
 
-See [ML_SETUP_INSTRUCTIONS.md](ML_SETUP_INSTRUCTIONS.md) for detailed setup and [ML_FEATURES_SUMMARY.md](ML_FEATURES_SUMMARY.md) for feature overview.
-
-### Setup Real SMS Notifications (Optional, 5 minutes)
-
-Want to receive real SMS during demos? Follow the [SMS Quick Setup Guide](SMS_QUICK_SETUP.md):
-
-1. Sign up at Twilio (get $15 free credit)
-2. Copy `.env.example` to `.env` and add your credentials
-3. Update phone numbers in `server/notificationService.js`
-4. Test: `node test-sms.js 1 sms`
-
-See [SMS_QUICK_SETUP.md](SMS_QUICK_SETUP.md) for step-by-step instructions or [TWILIO_SETUP.md](TWILIO_SETUP.md) for full production guide.
-
-### Production Build
 ```bash
 npm run build
-node server/enhancedServer.js
 ```
 
-## 📊 Architecture
+The production server can be started with `npm start`. It serves the API and
+WebSocket endpoint; it does not serve Vite's generated `dist` directory.
 
-### Frontend
-- **React 18**: Modern UI framework
-- **Recharts**: Data visualization library
-- **WebSocket**: Real-time data streaming
-- **Responsive Design**: Works on desktop, tablet, mobile
+## Deployment
 
-### Backend
-- **Node.js + Express**: REST API server
-- **WebSocket Server**: Real-time data streaming
-- **Isolation Forest**: Anomaly detection (100 trees)
-- **Random Forest**: Power prediction (50 estimators)
-- **ML Service**: Automatic training and inference
-- **Notification Service**: SMS/WhatsApp handler
+The live backend is deployed as a Render web service from [`render.yaml`](./render.yaml).
+The live Vercel frontend is configured to use that backend by default in
+production. To override the URLs, define these Vercel environment variables
+and redeploy:
 
-### Data Flow
-```
-Sensors → Backend → ML Training → Models (IF + RF)
-                  ↓                    ↓
-              WebSocket          Predictions + Anomalies
-                  ↓                    ↓
-              Frontend ← API Endpoints ←
-                  ↓
-                User
+```text
+VITE_API_URL=https://YOUR-SERVICE.onrender.com
+VITE_WS_URL=wss://YOUR-SERVICE.onrender.com
 ```
 
-## 🎯 Use Cases
+Set Render's `FRONTEND_URL` to the exact Vercel origin (no trailing slash) if
+the frontend domain changes; CORS uses this value. See
+[`DEPLOYMENT.md`](./DEPLOYMENT.md) for the setup and verification steps.
 
-1. **Energy Managers**: Monitor campus-wide consumption in real-time
-2. **Facility Teams**: Receive instant HVAC fault alerts
-3. **Sustainability Officers**: Track CO₂ emissions and renewable %
-4. **Building Managers**: Get SMS alerts for high wastage in their buildings
-5. **Administrators**: View historical trends and cost savings
+### Hosting limitations
 
-## 📱 Notification System
+- Render's free instance may spin down when idle and can take 50 seconds or
+  more to wake.
+- Reports and exports are stored on the server filesystem under `.kiro/reports`.
+  They may be lost when an ephemeral host restarts or redeploys. Use persistent
+  storage for data that must survive.
+- The Render Blueprint sets `PUPPETEER_SKIP_DOWNLOAD=true`, so it does not
+  download Chromium during deployment. PDF export may fail unless a compatible
+  browser is provided separately. CSV export does not require Puppeteer.
+- Simulated readings, alert history, notification logs, and ML training state
+  are process-local demo data, not a persistent production data store.
 
-### Alert Message Format
-```
-🚨 High wastage in Engineering: 25.3% over baseline 
-(150.2 kWh vs 120 kWh baseline). 
-Check HVAC/lighting systems. 
-Dashboard: https://campus.edu/energy
-```
+## Configuration and notifications
 
-### Trigger Conditions
-- Wastage >20%: Warning + SMS notification
-- Wastage >30%: Critical + immediate escalation
-- HVAC fault detected: Instant SMS to building manager
-- ML anomaly (Z-score >2.5): Alert logged + optional notification
+The root [`.env.example`](./.env.example) documents optional local environment
+variables. Copy it to `.env` only if you need to configure integrations; `.env`
+is ignored by Git. Never commit credentials, actual phone numbers, or API keys.
 
-## 🔧 Configuration
+SMS notifications are paused by default, and the demo test-notification
+endpoint is disabled unless `ENABLE_DEMO_ENDPOINTS=true`. To intentionally
+enable real SMS, configure valid Twilio credentials and recipient phone
+environment variables on the backend, then set `ENABLE_SMS=true`. For email
+report distribution, configure the SMTP environment variables used by the
+report distributor. Keep these credentials in the hosting provider's secret
+environment settings, not in the frontend or repository.
 
-### Wastage Thresholds
-Edit `server/notificationService.js`:
-```javascript
-wastageThresholds: {
-  default: 20,    // 20% triggers warning
-  critical: 30    // 30% triggers critical
-}
-```
+## API overview
 
-### Block Managers
-```javascript
-blockManagers: {
-  1: { name: 'John Doe', phone: '+91-9876543210' },
-  2: { name: 'Jane Smith', phone: '+91-9876543211' }
-}
-```
+All endpoints are served by the backend host. API requests are rate-limited.
 
-### ML Sensitivity
-Edit `server/mlService.js`:
-```javascript
-// Isolation Forest anomaly threshold
-predict(point, threshold = 0.6) {  // Lower = more sensitive (0.5-0.8)
-  // ...
-}
-```
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /health` | Hosting health check |
+| `GET /api/current-data` | Current simulated dashboard data |
+| `GET /api/analytics/:buildingId?range=24h` | Historical analytics |
+| `GET /api/alerts` | Current alerts |
+| `POST /api/alerts/:alertId/acknowledge` | Acknowledge an alert |
+| `GET /api/notifications` | Notification log |
+| `POST /api/test-notification` | Demo notification; hidden unless explicitly enabled |
+| `GET /api/sustainability` | Sustainability metrics |
+| `GET /api/monitoring/config` | Monitoring thresholds and settings |
+| `POST /api/monitoring/thresholds` | Update thresholds |
+| `POST /api/monitoring/adaptive` | Update adaptive monitoring |
+| `GET /api/monitoring/history/:buildingId` | Building power history |
+| `GET /api/sms/status` | SMS paused/active status |
+| `POST /api/sms/pause` | Pause SMS |
+| `POST /api/sms/resume` | Resume SMS |
+| `GET /api/ml/status` | ML model status |
+| `GET /api/ml/predict/:buildingId` | Building predictions |
+| `GET /api/ml/anomalies` | Anomaly results |
+| `POST /api/reports/generate` | Generate a report |
+| `GET /api/reports` | List reports |
+| `GET`/`PUT /api/reports/config` | Read or update report settings |
+| `GET /api/reports/:id` | Retrieve a report |
+| `DELETE /api/reports/:id` | Delete a report |
+| `GET /api/reports/:id/export/csv` | Export a report as CSV |
+| `GET /api/reports/:id/export/pdf` | Export a report as PDF (requires Chromium) |
+| `POST /api/reports/:id/distribute` | Distribute a report via configured channels |
+| `GET /api/reports/schedule/next` | Next scheduled report time |
+| WebSocket `/` | Initial live data and periodic updates |
 
-## 🤖 Machine Learning Models
+## Tests
 
-### Isolation Forest (Anomaly Detection)
-- **Algorithm**: Ensemble of 100 isolation trees
-- **Purpose**: Detect unusual energy consumption patterns
-- **Features**: 8 features (power, energy, water, gas, occupancy, temp, hour, day)
-- **Output**: Anomaly score (0-1) with severity classification
-- **Threshold**: Score > 0.6 = anomaly, > 0.7 = critical
-- **Performance**: < 10ms detection time
+Run the test suite with:
 
-### Random Forest (Predictions)
-- **Algorithm**: 50 decision tree estimators
-- **Purpose**: Predict future power consumption
-- **Predictions**: Next hour + 24-hour forecast
-- **Accuracy**: 85% with 200+ training points
-- **Confidence**: Improves continuously with more data
-- **Performance**: < 20ms prediction time
-
-### Training Process
-1. **Data Collection**: Every 3 seconds from all buildings
-2. **Feature Extraction**: 8 features per data point
-3. **Automatic Training**: After 200 points (~10 minutes)
-4. **Retraining**: Every 100 new data points
-5. **Continuous Learning**: Models improve over time
-
-### API Endpoints
-- `GET /api/ml/status` - Model training status
-- `GET /api/ml/predict/:buildingId` - Power predictions
-- `GET /api/ml/anomalies` - Detected anomalies
-
-### Documentation
-- **[ML Setup Instructions](ML_SETUP_INSTRUCTIONS.md)**: Quick start guide
-- **[ML Features Summary](ML_FEATURES_SUMMARY.md)**: Feature overview
-- **[ML Models Guide](ML_MODELS_GUIDE.md)**: Comprehensive documentation
-
-## 📈 API Endpoints
-
-### Real-time Data
-- `WebSocket ws://localhost:8080` - Real-time data stream
-
-### Analytics
-- `GET /api/analytics/:buildingId?range=24h` - Historical analytics
-- `GET /api/sustainability` - Sustainability metrics
-
-### Alerts & Notifications
-- `GET /api/alerts` - All active alerts
-- `POST /api/alerts/:id/acknowledge` - Acknowledge alert
-- `GET /api/notifications` - Notification log
-
-### Machine Learning (NEW!)
-- `GET /api/ml/status` - Model training status and info
-- `GET /api/ml/predict/:buildingId` - Next hour + 24h predictions
-- `GET /api/ml/anomalies` - All detected anomalies
-
-## 🌱 Sustainability Features
-
-- Real-time CO₂ emissions tracking
-- Renewable energy percentage monitoring
-- Net-zero 2030 progress visualization
-- Energy intensity (kWh/m²) metrics
-- Scope 1/2/3 emission breakdown
-- Daily cost savings calculations
-
-## 📚 Documentation
-
-- **[Quick Start Guide](QUICK_START.md)**: Get up and running in 5 minutes
-- **[Phase 1 Expansion](PHASE1_EXPANSION.md)**: Detailed feature documentation
-- **[Demo Script](DEMO_SCRIPT.md)**: Video walkthrough guide
-- **[Twilio Setup](TWILIO_SETUP.md)**: SMS/WhatsApp integration guide
-- **[ML Setup Instructions](ML_SETUP_INSTRUCTIONS.md)**: ML models quick start (NEW!)
-- **[ML Features Summary](ML_FEATURES_SUMMARY.md)**: ML capabilities overview (NEW!)
-- **[ML Models Guide](ML_MODELS_GUIDE.md)**: Comprehensive ML documentation (NEW!)
-
-## 🔐 Production Deployment
-
-### Environment Variables
-```env
-TWILIO_ACCOUNT_SID=your_account_sid
-TWILIO_AUTH_TOKEN=your_auth_token
-TWILIO_PHONE_NUMBER=+1234567890
-NODE_ENV=production
-PORT=8080
+```bash
+npm test
 ```
 
-### Twilio Integration
-See [TWILIO_SETUP.md](TWILIO_SETUP.md) for complete setup instructions.
-
-## 🛠️ Tech Stack
-
-- **Frontend**: React 18, Recharts, WebSocket, CSS3
-- **Backend**: Node.js, Express, WebSocket Server
-- **ML**: Statistical analysis, Z-score anomaly detection
-- **Notifications**: Twilio (SMS + WhatsApp)
-- **Data Viz**: Recharts (Area, Line, Heatmap, Gauge charts)
-
-## 📊 Key Metrics
-
-- 7 buildings monitored
-- 3-second real-time updates
-- >20% wastage threshold
-- Z-score >2.5 anomaly detection
-- 24/7 heatmap visualization
-- Instant SMS/WhatsApp alerts
-- 50+ alerts logged
-
-## 🎯 Future Roadmap (Phase 2)
-
-- [ ] TimescaleDB for time-series data
-- [ ] Python ML microservice (scikit-learn, Prophet)
-- [ ] Advanced LSTM models for prediction
-- [ ] Predictive maintenance alerts
-- [ ] Mobile app (React Native)
-- [ ] Multi-campus support
-- [ ] Custom alert rules engine
-- [ ] BMS system integration
-- [ ] Weather data correlation
-
-## 🤝 Contributing
-
-Contributions welcome! Please read our contributing guidelines.
-
-## 📄 License
-
-MIT License - see LICENSE file for details
-
-## 📞 Support
-
-- Documentation: See documentation files
-- Issues: GitHub Issues
-- Email: support@campus.edu
-
----
-
-**Built with ❤️ for sustainable campus energy management**
+The current Jest setup has a known initialization issue (`jest is not defined`
+in `tests/setup.js`); test suites may fail before individual tests run.
+Build the frontend with `npm run build`.
